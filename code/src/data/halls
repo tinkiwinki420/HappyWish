@@ -1,0 +1,26 @@
+// src/data/halls.js
+const halls = [
+  {
+    id: 1,
+    name: "Grand Palace",
+    description: "A grand hall with luxurious interiors.",
+    location: "Downtown",
+    price: 5000,
+  },
+  {
+    id: 2,
+    name: "Sunset Gardens",
+    description: "Beautiful gardens perfect for an outdoor wedding.",
+    location: "Uptown",
+    price: 3000,
+  },
+  {
+    id: 3,
+    name: "Ocean View",
+    description: "A stunning hall with a view of the ocean.",
+    location: "Seaside",
+    price: 7000,
+  },
+];
+
+export default halls;
