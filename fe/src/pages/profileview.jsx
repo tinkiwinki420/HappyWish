@@ -157,7 +157,7 @@ const ProfileView = () => {
           <span
             style={{
               fontSize: "1rem",
-              color: "#111",
+              color: "#333",
             }}
           >
             {profileData.membershipLevel}
