@@ -1,72 +1,42 @@
-import React, { useEffect, useState } from 'react';
-import { Route, Routes, Navigate } from 'react-router-dom';
-import MainPage from './pages/MainPage';
-import SinglePost from './pages/SinglePost';
-import './App.css';
-import axios from 'axios';
-import Header from './components/Header';
-import Footer from './components/Footer';
-import Contacts from './pages/Contacts';
-import About from './pages/About';
-import NewPost from './pages/NewPost';
-import EditPost from './pages/EditPost';
-import Register from './components/Register';
-import NormalDashboard from './components/NormalDashboard';
-import BusinessDashboard from './components/BusinessDashboard';
+import React, { useContext } from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import Login from './pages/Login';
+import Register from './components/RegularUserRegister';
+import BusinessUserRegister from './components/BusinessUserRegister';
+import Profile from './pages/Profile';
+import BusinessProfile from './pages/BusinessProfile';
+import AuthContext from './contexts/AuthContext';
+import Layout from './components/Layout';
+import Home from './pages/Home';
+import RegistrationSelection from './pages/Register'; // Ensure this import path is correct
 
-function App() {
-    const [userType, setUserType] = useState(null);
-    const [loading, setLoading] = useState(true);
+const App = () => {
+  const { isAuthenticated } = useContext(AuthContext);
+  const userType = localStorage.getItem('userType');
 
-    useEffect(() => {
-        const fetchUserType = async () => {
-            // Assuming you store token in localStorage after login
-            const token = localStorage.getItem('token');
-            if (token) {
-                const config = {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-auth-token': token
-                    }
-                };
-
-                try {
-                    const res = await axios.get('/api/auth/user', config);
-                    setUserType(res.data.userType);
-                } catch (err) {
-                    console.error(err);
-                }
+  return (
+    <Router>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={isAuthenticated ? <Navigate to="/profile" /> : <Login />} />
+          <Route path="/register" element={isAuthenticated ? <Navigate to="/profile" /> : <RegistrationSelection />} />
+          <Route path="/register-regular" element={isAuthenticated ? <Navigate to="/profile" /> : <Register />} />
+          <Route path="/register-business" element={isAuthenticated ? <Navigate to="/profile" /> : <BusinessUserRegister />} />
+          <Route
+            path="/profile"
+            element={
+              isAuthenticated ? (
+                userType === 'business' ? <BusinessProfile /> : <Profile />
+              ) : (
+                <Navigate to="/login" />
+              )
             }
-            setLoading(false);
-        };
-
-        fetchUserType();
-    }, []);
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    return (
-        <div className="App">
-            <Header />
-            <div className="main">
-                <Routes>
-                    <Route path="/register" element={<Register />} />
-                    {userType === 'normal' && <Route path="/dashboard" element={<NormalDashboard />} />}
-                    {userType === 'business' && <Route path="/dashboard" element={<BusinessDashboard />} />}
-                    <Route path="/" element={<Navigate to={userType ? "/dashboard" : "/register"} />} />
-                    <Route path="/post/:id" element={<SinglePost />} />
-                    <Route path="/" element={<MainPage />} />
-                    <Route path="/newpost" element={<NewPost />} />
-                    <Route path="/editpost/:id" element={<EditPost />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contacts />} />
-                </Routes>
-            </div>
-            <Footer />
-        </div>
-    );
-}
+          />
+        </Routes>
+      </Layout>
+    </Router>
+  );
+};
 
 export default App;
