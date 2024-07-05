@@ -8,8 +8,10 @@ import { handleInputChange } from '../components/InputChangeHandler';
 import { handleProfilePhotoChange, handleProfilePhotoUpload } from '../components/ProfilePhotoUploadHandler';
 import { handleSubmit } from '../components/FormSubmitHandler';
 import { handleLogout } from '../components/LogoutHandler';
-import { handlePhotoUpload } from '../components/PhotoUploadHandler'; // Import the handlePhotoUpload function
+import { handlePhotoUpload } from '../components/PhotoUploadHandler';
 import useFetchProfileEffect from '../hooks/useFetchProfileEffect';
+import '../styles/BusinessProfile.css';
+import '../styles/BusinessNavbar.css';
 import '../styles/styles.css';
 
 const BusinessProfile = () => {

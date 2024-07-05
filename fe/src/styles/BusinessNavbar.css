@@ -1,0 +1,34 @@
+/* BusinessNavBar.css */
+
+/* Ensure the navbar is always visible */
+.business-navbar {
+    display: flex;
+    justify-content: space-around;
+    background-color: #333;
+    padding: 10px 0;
+  }
+  
+  .business-navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Make the list items display in a row */
+  }
+  
+  .business-navbar ul li {
+    margin-right: 10px; /* Space between the nav items */
+  }
+  
+  .business-navbar .nav-link {
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    display: inline-block; /* Ensure links are inline */
+  }
+  
+  .business-navbar .nav-link:hover {
+    background-color: #ddd;
+    color: black;
+  }
+  

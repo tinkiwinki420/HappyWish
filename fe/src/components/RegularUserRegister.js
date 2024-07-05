@@ -1,6 +1,8 @@
+// src/components/RegularUserRegister.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook
+import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../constans';
+import '../styles/styles.css'; // Import styles
 
 const RegularUserRegister = () => {
   const [firstname, setFirstname] = useState('');
@@ -12,7 +14,7 @@ const RegularUserRegister = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate(); // Initialize the useNavigate hook
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,7 +29,7 @@ const RegularUserRegister = () => {
       const data = await response.json();
       if (response.ok) {
         alert(data.message);
-        navigate('/login'); // Redirect to the login page upon successful registration
+        navigate('/login'); // Redirect to login page after successful registration
       } else {
         setError(data.message || 'Error registering regular user');
       }
@@ -38,7 +40,8 @@ const RegularUserRegister = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="profile-container">
+      <h2>Register Regular User</h2>
       <div className="form-group">
         <label>First Name:</label>
         <input type="text" value={firstname} onChange={(e) => setFirstname(e.target.value)} />

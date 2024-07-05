@@ -5,36 +5,42 @@ import Register from './components/RegularUserRegister';
 import BusinessUserRegister from './components/BusinessUserRegister';
 import Profile from './pages/Profile';
 import BusinessProfile from './pages/BusinessProfile';
+import Financial from './pages/Financial';
+import Dates from './pages/Dates';
+import Services from './pages/Services';
 import AuthContext from './contexts/AuthContext';
 import Layout from './components/Layout';
+import BusinessLayout from './components/BusinessLayout';
 import Home from './pages/Home';
-import RegistrationSelection from './pages/Register'; // Ensure this import path is correct
+import RegistrationSelection from './pages/Register';
 
 const App = () => {
   const { isAuthenticated } = useContext(AuthContext);
-  const userType = localStorage.getItem('userType');
+  const userType = localStorage.getItem('userType'); // Get userType from localStorage
 
   return (
     <Router>
-      <Layout>
-        <Routes>
+      <Routes>
+        <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={isAuthenticated ? <Navigate to="/profile" /> : <Login />} />
           <Route path="/register" element={isAuthenticated ? <Navigate to="/profile" /> : <RegistrationSelection />} />
-          <Route path="/register-regular" element={isAuthenticated ? <Navigate to="/profile" /> : <Register />} />
           <Route path="/register-business" element={isAuthenticated ? <Navigate to="/profile" /> : <BusinessUserRegister />} />
-          <Route
-            path="/profile"
-            element={
-              isAuthenticated ? (
-                userType === 'business' ? <BusinessProfile /> : <Profile />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-        </Routes>
-      </Layout>
+        </Route>
+        {isAuthenticated && userType === 'business' && (
+          <Route element={<BusinessLayout />}>
+            <Route path="/profile" element={<BusinessProfile />} />
+            <Route path="/financial" element={<Financial />} />
+            <Route path="/dates" element={<Dates />} />
+            <Route path="/services" element={<Services />} />
+          </Route>
+        )}
+        {isAuthenticated && userType !== 'business' && (
+          <Route element={<Layout />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
+        )}
+      </Routes>
     </Router>
   );
 };

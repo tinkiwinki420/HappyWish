@@ -9,6 +9,7 @@ import { handleSubmit } from '../components/FormSubmitHandler';
 import { handleLogout } from '../components/LogoutHandler';
 import { fetchProfile } from '../components/FetchProfileHandler';
 import '../styles/styles.css';
+import '../styles/Profile.css';
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState({});

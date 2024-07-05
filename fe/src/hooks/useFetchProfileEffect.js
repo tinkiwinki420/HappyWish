@@ -11,7 +11,7 @@ const useFetchProfileEffect = (userId, setUserDetails, setFormData, setProfilePh
     fetchProfile(userId, setUserDetails, setFormData, setProfilePhoto, userType)
       .then(data => setPhotos(data.photos || []))
       .catch(error => console.error('Error fetching user details:', error));
-  }, [userId, userType, setUserDetails, setFormData, setProfilePhoto, setPhotos]);
+  }, [userId, setUserDetails, setFormData, setProfilePhoto, setPhotos, userType]);
 };
 
 export default useFetchProfileEffect;
