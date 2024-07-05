@@ -6,6 +6,8 @@ const registerRoutes = require("./routes/register");
 const loginRoutes = require("./routes/login");
 const businessUserProfileRoutes = require("./routes/businessUserProfile");
 const regularUserProfileRoutes = require("./routes/regularUserProfile");
+const categoriesRouter = require('./routes/categories'); // Use only categoriesRouter
+const reservationsRouter = require('./routes/reservations');
 const db = require("./config/db");
 
 const app = express();
@@ -22,6 +24,8 @@ app.use("/api/register", registerRoutes);
 app.use("/api/login", loginRoutes);
 app.use("/api/profile/business", businessUserProfileRoutes);
 app.use("/api/profile/regular", regularUserProfileRoutes);
+app.use('/api/categories', categoriesRouter); // Use only categoriesRouter
+app.use('/api/reservations', reservationsRouter);
 
 const PORT = 8801;
 

@@ -8,6 +8,8 @@ import BusinessProfile from './pages/BusinessProfile';
 import Financial from './pages/Financial';
 import Dates from './pages/Dates';
 import Services from './pages/Services';
+import Categories from './pages/Categories';
+import CategoryUsers from './pages/CategoryUsers';
 import AuthContext from './contexts/AuthContext';
 import Layout from './components/Layout';
 import BusinessLayout from './components/BusinessLayout';
@@ -26,6 +28,8 @@ const App = () => {
           <Route path="/login" element={isAuthenticated ? <Navigate to="/profile" /> : <Login />} />
           <Route path="/register" element={isAuthenticated ? <Navigate to="/profile" /> : <RegistrationSelection />} />
           <Route path="/register-business" element={isAuthenticated ? <Navigate to="/profile" /> : <BusinessUserRegister />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/category/:categoryId" element={<CategoryUsers />} />
         </Route>
         {isAuthenticated && userType === 'business' && (
           <Route element={<BusinessLayout />}>

@@ -1,0 +1,50 @@
+/* src/styles/Categories.css */
+.categories-container {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .categories-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .category-item {
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  
+  .category-item img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+  }
+  
+  .category-item:hover {
+    transform: scale(1.05);
+  }
+  
+  .upload-section {
+    margin-top: 30px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .upload-section form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  .upload-section select,
+  .upload-section input,
+  .upload-section button {
+    padding: 10px;
+    font-size: 16px;
+  }
+  
