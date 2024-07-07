@@ -28,6 +28,7 @@ const App = () => {
           <Route path="/login" element={isAuthenticated ? <Navigate to="/profile" /> : <Login />} />
           <Route path="/register" element={isAuthenticated ? <Navigate to="/profile" /> : <RegistrationSelection />} />
           <Route path="/register-business" element={isAuthenticated ? <Navigate to="/profile" /> : <BusinessUserRegister />} />
+          <Route path="/register-regular" element={isAuthenticated ? <Navigate to="/profile" /> : <Register />} />
           <Route path="/categories" element={<Categories />} />
           <Route path="/category/:categoryId" element={<CategoryUsers />} />
         </Route>

@@ -6,22 +6,22 @@ const BusinessNavBar = () => {
     <nav className="business-navbar">
       <ul>
         <li>
-          <NavLink to="/profile" activeClassName="active">
+          <NavLink to="/profile" activeclassname="active">
             Profile
           </NavLink>
         </li>
         <li>
-          <NavLink to="/financial" activeClassName="active">
+          <NavLink to="/financial" activeclassname="active">
             Financial
           </NavLink>
         </li>
         <li>
-          <NavLink to="/dates" activeClassName="active">
+          <NavLink to="/dates" activeclassname="active">
             Dates
           </NavLink>
         </li>
         <li>
-          <NavLink to="/services" activeClassName="active">
+          <NavLink to="/services" activeclassname="active">
             Services
           </NavLink>
         </li>

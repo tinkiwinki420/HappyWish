@@ -41,7 +41,8 @@ const upload = multer({
 
 // Get all categories
 router.get("/", (req, res) => {
-  const query = "SELECT id, category_name AS name, category_photo FROM business_categories";
+  const query =
+    "SELECT id, category_name AS name, category_photo FROM business_categories";
   db.query(query, (err, results) => {
     if (err) {
       console.error("Database error:", err);
@@ -52,24 +53,29 @@ router.get("/", (req, res) => {
 });
 
 // Upload category photo
-router.post("/:categoryId/upload-photo", upload.single("categoryPhoto"), (req, res) => {
-  const categoryId = req.params.categoryId;
-  const categoryPhotoUrl = `/uploads/categories/${req.file.filename}`;
+router.post(
+  "/:categoryId/upload-photo",
+  upload.single("categoryPhoto"),
+  (req, res) => {
+    const categoryId = req.params.categoryId;
+    const categoryPhotoUrl = `/uploads/categories/${req.file.filename}`;
 
-  const query = "UPDATE business_categories SET category_photo = ? WHERE id = ?";
+    const query =
+      "UPDATE business_categories SET category_photo = ? WHERE id = ?";
 
-  db.query(query, [categoryPhotoUrl, categoryId], (err, results) => {
-    if (err) {
-      console.error("Database error:", err);
-      return res.status(500).json({ message: "Database error", error: err });
-    }
+    db.query(query, [categoryPhotoUrl, categoryId], (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ message: "Database error", error: err });
+      }
 
-    res.status(200).json({
-      message: "Category photo uploaded successfully",
-      categoryPhoto: categoryPhotoUrl,
+      res.status(200).json({
+        message: "Category photo uploaded successfully",
+        categoryPhoto: categoryPhotoUrl,
+      });
     });
-  });
-});
+  }
+);
 
 // Get users by category
 router.get("/:categoryId/users", (req, res) => {
@@ -85,9 +91,11 @@ router.get("/:categoryId/users", (req, res) => {
       return res.status(500).json({ message: "Database error", error: err });
     }
 
-    const users = results.map(user => ({
+    const users = results.map((user) => ({
       ...user,
-      profilePhoto: user.profile_photo ? `${req.protocol}://${req.get("host")}/uploads/${user.profile_photo}` : null
+      profilePhoto: user.profile_photo
+        ? `${req.protocol}://${req.get("host")}/uploads/${user.profile_photo}`
+        : null,
     }));
 
     res.status(200).json(users);

@@ -5,7 +5,7 @@ import "../styles/Categories.css";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null);
+
   const [categoryPhoto, setCategoryPhoto] = useState(null);
   const navigate = useNavigate();
 
