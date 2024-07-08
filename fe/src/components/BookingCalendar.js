@@ -1,4 +1,3 @@
-// src/components/BookingCalendar.js
 import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -12,6 +11,7 @@ const localizer = momentLocalizer(moment);
 const BookingCalendar = () => {
   const [events, setEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTimeSlot, setSelectedTimeSlot] = useState(null);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -22,18 +22,21 @@ const BookingCalendar = () => {
   const [bookingStatus, setBookingStatus] = useState([]);
 
   useEffect(() => {
-    fetch(`${API_URL}/api/bookings`)
-      .then((response) => response.json())
-      .then((data) => {
-        const formattedEvents = data.map((event) => ({
-          ...event,
-          start: new Date(event.date),
-          end: new Date(event.date),
-          title: `${event.firstName} ${event.lastName}`,
-        }));
-        setEvents(formattedEvents);
-      })
-      .catch((error) => console.error('Error fetching events:', error));
+    const businessId = localStorage.getItem('userId');
+    if (businessId) {
+      fetch(`${API_URL}/api/bookings/business/${businessId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          const formattedEvents = data.map((event) => ({
+            ...event,
+            start: new Date(event.date),
+            end: new Date(event.date),
+            title: `${event.firstName} ${event.lastName}`,
+          }));
+          setEvents(formattedEvents);
+        })
+        .catch((error) => console.error('Error fetching events:', error));
+    }
   }, []);
 
   const handleSelectSlot = ({ start }) => {
@@ -55,14 +58,18 @@ const BookingCalendar = () => {
   };
 
   const handleTimeSelection = (time) => {
+    setSelectedTimeSlot(time);
+  };
+
+  const handleBooking = () => {
     const numOfBusiness = localStorage.getItem('userId');
     if (!numOfBusiness) {
       alert('Business ID not found.');
       return;
     }
 
-    if (!formData.firstName || !formData.lastName || !formData.idNum || !formData.phoneNumber) {
-      alert('Please fill in all the form fields.');
+    if (!formData.firstName || !formData.lastName || !formData.idNum || !formData.phoneNumber || !selectedTimeSlot) {
+      alert('Please fill in all the form fields and select a time slot.');
       return;
     }
 
@@ -72,7 +79,7 @@ const BookingCalendar = () => {
       body: JSON.stringify({
         business_id: numOfBusiness,
         date: selectedDate.toISOString().split('T')[0],
-        time_slot: time,
+        time_slot: selectedTimeSlot,
         ...formData,
       }),
     })
@@ -86,12 +93,13 @@ const BookingCalendar = () => {
               start: new Date(selectedDate),
               end: new Date(selectedDate),
               title: `${formData.firstName} ${formData.lastName}`,
-              time_slot: time,
+              time_slot: selectedTimeSlot,
             },
           ]);
           setShowModal(false);
           setFormData({ firstName: '', lastName: '', idNum: '', phoneNumber: '' });
           setSelectedDate(null);
+          setSelectedTimeSlot(null);
         } else {
           alert(data.message);
         }
@@ -116,7 +124,7 @@ const BookingCalendar = () => {
         components={{
           agenda: {
             event: CustomEvent,
-            time: ()=>null, // Use the custom agenda time component
+            time: () => null, // Use the custom agenda time component
           },
           toolbar: (props) => (
             <div className="rbc-toolbar">
@@ -128,7 +136,7 @@ const BookingCalendar = () => {
               <span className="rbc-toolbar-label">{props.label}</span>
               <span className="rbc-btn-group">
                 <button type="button" onClick={() => props.onView('month')}>Month</button>
-                <button type="button" onClick={() => props.onView('agenda')}>Agenda</button>
+                <button type="button" onClick={() => props.onView('agenda')}>Events</button>
               </span>
             </div>
           ),
@@ -139,66 +147,63 @@ const BookingCalendar = () => {
         <div className="modal">
           <div className="modal-content">
             <h3>Select Time Slot for {moment(selectedDate).format('MMMM Do YYYY')}</h3>
-            <button
-              onClick={() => handleTimeSelection('day')}
-              disabled={bookingStatus.some(booking => booking.time_slot === 'day')}
-            >
-              Day
-            </button>
-            <button
-              onClick={() => handleTimeSelection('night')}
-              disabled={bookingStatus.some(booking => booking.time_slot === 'night')}
-            >
-              Night
-            </button>
+            {!bookingStatus.some(booking => booking.time_slot === 'day') && (
+              <button onClick={() => handleTimeSelection('day')}>
+                Day Slot
+              </button>
+            )}
+            {!bookingStatus.some(booking => booking.time_slot === 'night') && (
+              <button onClick={() => handleTimeSelection('night')}>
+                Night Slot
+              </button>
+            )}
             <button onClick={() => setShowModal(false)}>Cancel</button>
           </div>
+          <div className="form-content">
+            <h3>Booking Details</h3>
+            <form>
+              <div>
+                <label>First Name:</label>
+                <input
+                  type="text"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label>Last Name:</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label>ID Number:</label>
+                <input
+                  type="text"
+                  name="idNum"
+                  value={formData.idNum}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <div>
+                <label>Phone Number:</label>
+                <input
+                  type="text"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                />
+              </div>
+              <button type="button" onClick={handleBooking}>
+                Book
+              </button>
+            </form>
+          </div>
         </div>
-      )}
-      {selectedDate && showModal && (
-        <form className="date-form">
-          <h3>Selected Date: {moment(selectedDate).format('MMMM Do YYYY')}</h3>
-          <div className="form-group">
-            <label>First Name</label>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Last Name</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>ID Number</label>
-            <input
-              type="text"
-              name="idNum"
-              value={formData.idNum}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label>Phone Number</label>
-            <input
-              type="text"
-              name="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleInputChange}
-              required
-            />
-          </div>
-        </form>
       )}
     </div>
   );
