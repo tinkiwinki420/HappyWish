@@ -1,3 +1,5 @@
+// index.js
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -5,6 +7,7 @@ const path = require('path');
 const registerRoutes = require('./routes/register');
 const loginRoutes = require('./routes/login');
 const businessUserProfileRoutes = require('./routes/businessUserProfile');
+const businessUserProfileBookingRoutes = require('./routes/businessUserProfileBooking');
 const regularUserProfileRoutes = require('./routes/regularUserProfile');
 const categoriesRouter = require('./routes/categories');
 const eventsRouter = require('./routes/bookings');
@@ -22,6 +25,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/register', registerRoutes);
 app.use('/api/login', loginRoutes);
 app.use('/api/profile/business', businessUserProfileRoutes);
+app.use('/api/profile/business/bookings', businessUserProfileBookingRoutes);
 app.use('/api/profile/regular', regularUserProfileRoutes);
 app.use('/api/categories', categoriesRouter);
 app.use('/api/bookings', eventsRouter);

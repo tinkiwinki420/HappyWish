@@ -62,6 +62,34 @@ router.get("/:id", (req, res) => {
   });
 });
 
+// Get Photos for a Business User
+router.get("/users/:id/photos", (req, res) => {
+  const id = req.params.id;
+  console.log(`Fetching photos for business user with ID: ${id}`);
+
+  const query = "SELECT photo_url FROM business_photos WHERE business_id = ?";
+
+  db.query(query, [id], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "Database error", error: err });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: "No photos found for this user" });
+    }
+
+    const photos = results.map(
+      (photo) =>
+        `${req.protocol}://${req.get("host")}/uploads/${path.basename(
+          photo.photo_url
+        )}`
+    );
+    console.log("Photos fetched successfully:", photos); // Log the URLs
+    res.status(200).json({ photos });
+  });
+});
+
 // Upload Profile Photo for Business User
 router.post("/:id/profile-photo", upload.single("profilePhoto"), (req, res) => {
   const id = req.params.id;

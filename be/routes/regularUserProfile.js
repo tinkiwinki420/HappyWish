@@ -1,3 +1,4 @@
+//rotes/regularUserProfile.js
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
@@ -87,6 +88,40 @@ router.put("/:id", (req, res) => {
       res.status(200).json({ message: "User profile updated successfully" });
     }
   );
+});
+
+// Handle regular user bookings
+router.post("/regular", (req, res) => {
+  const { business_id, date, time_slot, user_id } = req.body;
+
+  // Fetch user details from the regular_users table
+  const userQuery = "SELECT firstname, lastname, auto_id AS idNum, email FROM regular_users WHERE auto_id = ?";
+
+  db.query(userQuery, [user_id], (err, userResults) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "Database error", error: err });
+    }
+
+    if (userResults.length === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const user = userResults[0];
+    const { firstname, lastname, idNum, email } = user;
+
+    // Insert booking into the users_bookings table
+    const bookingQuery = "INSERT INTO users_bookings (business_id, user_id, firstName, lastName, idNum, email, date, time_slot) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    
+    db.query(bookingQuery, [business_id, user_id, firstname, lastname, idNum, email, date, time_slot], (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ message: "Database error", error: err });
+      }
+
+      res.status(200).json({ message: "Booking created successfully" });
+    });
+  });
 });
 
 module.exports = router;

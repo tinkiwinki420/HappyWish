@@ -3,17 +3,6 @@ const router = express.Router();
 const db = require("../config/db");
 const multer = require("multer");
 const path = require("path");
-const fs = require("fs");
-
-// Ensure the uploads directory exists
-const ensureUploadsDirectory = () => {
-  const dir = path.join(__dirname, "../uploads/categories");
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-};
-
-ensureUploadsDirectory();
 
 // Configure Multer
 const storage = multer.diskStorage({
