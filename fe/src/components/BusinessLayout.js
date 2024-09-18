@@ -4,6 +4,7 @@ import Header from './Header';
 import Footer from './Footer';
 import BusinessNavBar from './BusinessNavBar';
 
+
 const BusinessLayout = () => {
   return (
     <div>

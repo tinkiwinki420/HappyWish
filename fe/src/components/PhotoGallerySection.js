@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/img-redundant-alt */
 import React from "react";
 
 const PhotoGallerySection = ({
@@ -8,10 +7,19 @@ const PhotoGallerySection = ({
 }) => (
   <div>
     <h2>Photos</h2>
-    <form onSubmit={handlePhotoUpload}>
-      <input type='file' multiple onChange={handlePhotoChange} />
-      <button type='submit'>Upload Photos</button>
-    </form>
+    <input
+      type='file'
+      id='photoGalleryInput'
+      multiple
+      style={{ display: 'none' }}
+      onChange={(e) => {
+        handlePhotoChange(e);
+        handlePhotoUpload(e);
+      }}
+    />
+    <label htmlFor='photoGalleryInput' className='custom-upload-button'>
+      Upload Photos
+    </label>
     <div className='photo-gallery'>
       {photos.map((photo, index) => (
         <div key={index}>

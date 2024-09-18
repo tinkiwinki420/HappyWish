@@ -1,7 +1,6 @@
 // src/pages/Dates.js
 import React from 'react';
 import BookingCalendar from '../components/BookingCalendar';
-import '../styles/styles.css';
 
 const Dates = () => {
   return (

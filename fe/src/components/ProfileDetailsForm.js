@@ -1,6 +1,10 @@
 import React from 'react';
 
 const ProfileDetailsForm = ({ formData, handleInputChange, handleSubmit }) => {
+  // Calculate the date 16 years ago from today
+  const today = new Date();
+  const sixteenYearsAgo = new Date(today.setFullYear(today.getFullYear() - 16)).toISOString().split('T')[0];
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
@@ -54,6 +58,7 @@ const ProfileDetailsForm = ({ formData, handleInputChange, handleSubmit }) => {
           type="date"
           name="dob"
           value={formData.dob || ''}
+          max={sixteenYearsAgo}  // User must be at least 16 years old
           onChange={handleInputChange}
         />
       </div>
@@ -66,7 +71,7 @@ const ProfileDetailsForm = ({ formData, handleInputChange, handleSubmit }) => {
           onChange={handleInputChange}
         />
       </div>
-      <button type="submit">Save</button>
+      <button type="submit" className="edit-button">Save</button>
     </form>
   );
 };

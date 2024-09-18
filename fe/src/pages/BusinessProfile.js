@@ -12,7 +12,8 @@ import { handlePhotoUpload } from '../components/PhotoUploadHandler';
 import useFetchProfileEffect from '../hooks/useFetchProfileEffect';
 import '../styles/BusinessProfile.css';
 import '../styles/BusinessNavbar.css';
-import '../styles/styles.css';
+import '../styles/footer.css';
+import '../styles/header.css';
 
 const BusinessProfile = () => {
   const [userDetails, setUserDetails] = useState({});
@@ -39,11 +40,13 @@ const BusinessProfile = () => {
 
   return (
     <div className="profile-container">
-      <h1>Business Profile</h1>
+      <h1>{userDetails.businessName || 'Business Profile'}</h1> {/* Display business name or fallback to 'Business Profile' */}
       <ProfilePhotoSection
         profilePhoto={profilePhoto}
-        handleProfilePhotoChange={(e) => handleProfilePhotoChange(e, setNewProfilePhoto)}
-        handleProfilePhotoUpload={(e) => handleProfilePhotoUpload(e, userId, newProfilePhoto, setProfilePhoto, setNewProfilePhoto, userType)}
+        setNewProfilePhoto={setNewProfilePhoto}
+        setProfilePhoto={setProfilePhoto}
+        userId={userId}
+        userType={userType}
       />
       {editing ? (
         <BusinessProfileDetailsForm

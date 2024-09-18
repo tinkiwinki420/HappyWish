@@ -1,18 +1,37 @@
-// src/pages/Register.js
-import React from 'react';
-import { Link } from 'react-router-dom';
-import '../styles/styles.css'; // Import styles
+import React, { useState } from 'react';
+import RegularUserRegister from '../components/RegularUserRegister';
+import BusinessUserRegister from '../components/BusinessUserRegister';
+import '../styles/register.css'; // Import the CSS
 
 const RegistrationSelection = () => {
+  const [isRegularUser, setIsRegularUser] = useState(true);
+
   return (
-    <div className="profile-container">
-      <h1>Select Registration Type</h1>
-      <Link to="/register-regular">
-        <button>Regular User Registration</button>
-      </Link>
-      <Link to="/register-business">
-        <button>Business User Registration</button>
-      </Link>
+    <div className="register-page">
+      <div className="slider-container">
+        <div className="slider">
+          <button
+            className={`slider-button ${isRegularUser ? 'active' : ''}`}
+            onClick={() => setIsRegularUser(true)}
+          >
+            Regular User
+          </button>
+          <button
+            className={`slider-button ${!isRegularUser ? 'active' : ''}`}
+            onClick={() => setIsRegularUser(false)}
+          >
+            Business User
+          </button>
+        </div>
+      </div>
+      <div className="form-wrapper">
+        <div className={`form-container ${isRegularUser ? 'show' : 'hide'}`}>
+          <RegularUserRegister />
+        </div>
+        <div className={`form-container ${!isRegularUser ? 'show' : 'hide'}`}>
+          <BusinessUserRegister />
+        </div>
+      </div>
     </div>
   );
 };

@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../constans';
-import '../styles/styles.css'; // Import styles
 
 const RegularUserRegister = () => {
   const [firstname, setFirstname] = useState('');

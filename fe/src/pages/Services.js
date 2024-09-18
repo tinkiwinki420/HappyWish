@@ -1,7 +1,6 @@
 // src/pages/Services.js
 import React from 'react';
-import '../styles/styles.css';
-
+ 
 const Services = () => {
   return (
     <div>

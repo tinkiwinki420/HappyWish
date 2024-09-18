@@ -1,61 +1,60 @@
-/* Profile.css */
-.profile-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.profile-photo-section {
+.details-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
-.profile-photo {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-}
-
-.profile-photo-placeholder {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background-color: #ddd;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    margin-bottom: 10px;
-}
-
-form {
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .details-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    padding: 20px 30px;
+    max-width: 500px;
     width: 100%;
+  }
+  
+  .details-section {
     margin-bottom: 20px;
-}
-
-form input[type="file"] {
-    display: block;
+  }
+  
+  .details-section h2 {
+    font-size: 1.5em;
     margin-bottom: 10px;
-}
-
-form button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
+    color: #333;
+  }
+  
+  .details-section p {
+    font-size: 1.2em;
+    color: #555;
+    margin-bottom: 8px;
+  }
+  
+  .edit-button {
+    background: linear-gradient(135deg, #007aff, #19ad68);
     color: white;
+    padding: 12px 28px;
     border: none;
-    border-radius: 4px;
+    border-radius: 50px;
     cursor: pointer;
-    text-align: center;
-}
-
-form button:hover {
-    background-color: #0056b3;
-}
+    font-size: 16px;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: block;
+    margin: 0 auto;
+    text-transform: uppercase;
+  }
+  
+  .edit-button:hover {
+    background: linear-gradient(135deg, #19ad68, #007aff);
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .edit-button:active {
+    background: linear-gradient(135deg, #0361c0, #0d8b43);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  }
+  

@@ -1,0 +1,117 @@
+/* Background for registration page */
+.register-page {
+    background-image: url('../styles/logos/login bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    min-height: 83vh; /* Set the height limit */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Align form near the top with some padding */
+    align-items: center;
+    padding: 20px; /* Reduce padding to accommodate content within 83vh */
+    box-sizing: border-box;
+}
+
+/* Slider container at the top */
+.slider-container {
+    margin-bottom: 10px; /* Reduced margin to fit within 83vh */
+    width: 100%;
+    max-width: 500px;
+}
+
+.slider {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly more opaque */
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.slider-button {
+    padding: 12px; /* Adjust padding for height limit */
+    font-size: 1.1em; /* Slightly smaller font size */
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex: 1;
+    text-align: center;
+    background-color: #007aff;
+    color: white;
+    border-radius: 8px; /* Added rounded corners */
+    border: 2px solid transparent; /* Initial transparent border */
+}
+
+.slider-button:hover {
+    background-color: #005bb5;
+}
+
+.slider-button.active {
+    background-color: #005bb5;
+    color: white;
+    border-bottom: 2px solid white; /* Highlight active button */
+}
+
+/* Form wrapper to contain both forms */
+.form-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 500px;
+    height: calc(100% - 60px); /* Calculate height to fit within 83vh */
+}
+
+/* Form container with transition */
+.form-container {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    opacity: 0;
+    transform: translateX(100%);
+    background-color: rgba(255, 255, 255, 0.9); /* Background color for the form */
+    padding: 20px; /* Reduce padding to fit within height */
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); /* Adjusted box shadow */
+    border: 1px solid #ccc; /* Border around the form */
+}
+
+.form-container.show {
+    opacity: 1;
+    transform: translateX(0);
+    z-index: 1;
+}
+
+.form-container.hide {
+    opacity: 0;
+    transform: translateX(-100%);
+    z-index: 0;
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+    .slider-button {
+        padding: 8px; /* Smaller padding on smaller screens */
+        font-size: 1em;
+    }
+
+    .form-wrapper {
+        max-width: 100%;
+    }
+
+    .form-container {
+        padding: 15px;
+    }
+
+    .form-group input,
+    .form-group select {
+        padding: 8px;
+        font-size: 1em;
+    }
+
+    button {
+        padding: 10px;
+        font-size: 1em;
+    }
+}

@@ -1,4 +1,5 @@
 import React from "react";
+import '../styles/BusinessProfileDetailsDisplay.css'; // Ensure you link to your CSS file
 
 const BusinessProfileDetailsForm = ({
   formData,
@@ -34,7 +35,7 @@ const BusinessProfileDetailsForm = ({
           onChange={handleInputChange}
         />
       </div>
-      <button type='submit'>Save</button>
+      <button type='submit' className="edit-button">Save</button>
     </form>
   );
 };

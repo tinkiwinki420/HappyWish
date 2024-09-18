@@ -8,7 +8,6 @@ import { handleProfilePhotoChange, handleProfilePhotoUpload } from '../component
 import { handleSubmit } from '../components/FormSubmitHandler';
 import { handleLogout } from '../components/LogoutHandler';
 import { fetchProfile } from '../components/FetchProfileHandler';
-import '../styles/styles.css';
 import '../styles/Profile.css';
 
 const Profile = () => {
@@ -40,11 +39,13 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
-      <h1>{userType === 'business' ? 'Business' : 'Regular'} User Profile</h1>
+      <h1>{userDetails.firstName} {userDetails.lastName}</h1>
       <ProfilePhotoSection
         profilePhoto={profilePhoto}
-        handleProfilePhotoChange={(e) => handleProfilePhotoChange(e, setNewProfilePhoto)}
-        handleProfilePhotoUpload={(e) => handleProfilePhotoUpload(e, userId, newProfilePhoto, setProfilePhoto, setNewProfilePhoto, userType)}
+        setNewProfilePhoto={setNewProfilePhoto}
+        setProfilePhoto={setProfilePhoto}
+        userId={userId}
+        userType={userType}
       />
       {editing ? (
         <ProfileDetailsForm
