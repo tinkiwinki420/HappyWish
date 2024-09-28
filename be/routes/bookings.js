@@ -3,6 +3,273 @@ const moment = require("moment-timezone");
 const router = express.Router();
 const db = require("../config/db");
 
+// Create a new booking
+router.post("/", (req, res) => {
+  const {
+    business_id,
+    date,
+    time_slot,
+    firstName,
+    lastName,
+    idNum,
+    phoneNumber,
+    email,
+    num_of_people,
+    meal_name,
+    meal_price,
+    meal_photo, // Check if this is correctly received
+    total,
+    price_remaining,
+    paid,
+  } = req.body;
+
+  // First, retrieve the current number of bookings
+  const getBookingsQuery = `SELECT num_of_bookings FROM business_users WHERE id = ?`;
+
+  db.query(getBookingsQuery, [business_id], (err, results) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).json({ message: "Database error", error: err });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ message: "Business not found" });
+    }
+
+    const num_of_bookings = results[0].num_of_bookings;
+    const book_id = `${num_of_bookings + 1}`;
+
+    // Parse the date and add one day
+    let bookingDate = new Date(date);
+    bookingDate.setDate(bookingDate.getDate() + 1);
+    const formattedDate = bookingDate.toISOString().split("T")[0];
+
+    const insertBookingQuery = `
+      INSERT INTO bookings (
+        business_id, date, time_slot, firstName, lastName, idNum, phoneNumber, email, 
+        num_of_people, meal_name, meal_price, meal_photo, total_price, price_remaining, paid, book_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+
+    db.query(
+      insertBookingQuery,
+      [
+        business_id,
+        formattedDate,
+        time_slot,
+        firstName,
+        lastName,
+        idNum,
+        phoneNumber,
+        email,
+        num_of_people,
+        meal_name,
+        meal_price,
+        meal_photo,
+        total,
+        price_remaining,
+        paid,
+        book_id,
+      ],
+      (err, result) => {
+        if (err) {
+          console.error("Database error:", err);
+          return res
+            .status(500)
+            .json({ message: "Database error", error: err });
+        }
+
+        // After successfully creating the booking, update the num_of_bookings
+        const updateBookingsQuery = `UPDATE business_users SET num_of_bookings = num_of_bookings + 1 WHERE id = ?`;
+
+        db.query(updateBookingsQuery, [business_id], (err, updateResult) => {
+          if (err) {
+            console.error("Database error:", err);
+            return res
+              .status(500)
+              .json({ message: "Database error", error: err });
+          }
+
+          res
+            .status(201)
+            .json({
+              message: "Booking created successfully",
+              bookingId: result.insertId,
+            });
+        });
+      }
+    );
+  });
+});
+
+// Update an existing booking
+router.put("/", (req, res) => {
+  const {
+    business_id,
+    date,
+    time_slot,
+    firstName,
+    lastName,
+    idNum,
+    phoneNumber,
+    email,
+    num_of_people,
+    meal_name,
+    meal_price,
+    meal_photo,
+    total,
+    price_remaining,
+    paid,
+  } = req.body;
+
+  // Parse the date and add one day
+  let bookingDate = new Date(date);
+  bookingDate.setDate(bookingDate.getDate() + 1);
+  const formattedDate = bookingDate.toISOString().split("T")[0];
+
+  // Queries for updating bookings in both tables
+  const updateBookingQuery = `
+    UPDATE bookings
+    SET 
+      firstName = ?, 
+      lastName = ?, 
+      idNum = ?, 
+      phoneNumber = ?, 
+      email = ?, 
+      num_of_people = ?, 
+      meal_name = ?, 
+      meal_price = ?, 
+      meal_photo = ?, 
+      total_price = ?, 
+      price_remaining = ?, 
+      paid = ?
+    WHERE 
+      business_id = ? AND 
+      date = ? AND 
+      time_slot = ?
+  `;
+
+  const updateUserBookingQuery = `
+    UPDATE users_bookings
+    SET 
+      firstName = ?, 
+      lastName = ?, 
+      idNum = ?, 
+      phoneNumber = ?, 
+      email = ?, 
+      num_of_people = ?, 
+      meal_name = ?, 
+      meal_price = ?, 
+      meal_photo = ?, 
+      total_price = ?, 
+      price_remaining = ?, 
+      paid = ?
+    WHERE 
+      business_id = ? AND 
+      date = ? AND 
+      time_slot = ?
+  `;
+
+  // Attempt to update the booking in the 'bookings' table first
+  db.query(
+    updateBookingQuery,
+    [
+      firstName,
+      lastName,
+      idNum,
+      phoneNumber,
+      email,
+      num_of_people,
+      meal_name,
+      meal_price,
+      meal_photo,
+      total,
+      price_remaining,
+      paid,
+      business_id,
+      formattedDate,
+      time_slot,
+    ],
+    (err, result) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ message: "Database error", error: err });
+      }
+
+      if (result.affectedRows === 0) {
+        // If no rows were affected, try to update the booking in the 'users_bookings' table
+        db.query(
+          updateUserBookingQuery,
+          [
+            firstName,
+            lastName,
+            idNum,
+            phoneNumber,
+            email,
+            num_of_people,
+            meal_name,
+            meal_price,
+            meal_photo,
+            total,
+            price_remaining,
+            paid,
+            business_id,
+            formattedDate,
+            time_slot,
+          ],
+          (err, result) => {
+            if (err) {
+              console.error("Database error:", err);
+              return res
+                .status(500)
+                .json({ message: "Database error", error: err });
+            }
+
+            if (result.affectedRows === 0) {
+              return res
+                .status(404)
+                .json({ message: "Booking not found or no changes made" });
+            }
+
+            res
+              .status(200)
+              .json({
+                message: "Booking updated successfully in users_bookings table",
+              });
+          }
+        );
+      } else {
+        res
+          .status(200)
+          .json({ message: "Booking updated successfully in bookings table" });
+      }
+    }
+  );
+});
+
+// Get business capacity details
+router.get("/business/:businessId/capacity", (req, res) => {
+  const { businessId } = req.params;
+
+  db.query(
+    "SELECT hallCapacity, minGuests, price_per_event FROM business_users WHERE id = ?",
+    [businessId],
+    (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ message: "Database error", error: err });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ message: "Business not found" });
+      }
+
+      const { hallCapacity, minGuests, price_per_event } = results[0];
+      res.status(200).json({ hallCapacity, minGuests, price_per_event });
+    }
+  );
+});
+
 // Get all bookings (from bookings and users_bookings tables)
 router.get("/", (req, res) => {
   const query1 = "SELECT * FROM bookings";
@@ -24,76 +291,6 @@ router.get("/", (req, res) => {
       res.status(200).json(combinedResults);
     });
   });
-});
-
-// Create a new booking
-router.post("/", (req, res) => {
-  const {
-    business_id,
-    date,
-    time_slot,
-    firstName,
-    lastName,
-    idNum,
-    phoneNumber,
-  } = req.body;
-
-  const normalizedDate = moment(date)
-    .tz("Asia/Jerusalem")
-    .add(1, "days")
-    .format("YYYY-MM-DD"); // Add one day manually
-
-  db.query(
-    "SELECT * FROM bookings WHERE date = ?",
-    [normalizedDate],
-    (err, results) => {
-      if (err) {
-        console.error(err);
-        res.status(500).json({ message: "Database error", error: err });
-      } else {
-        const dayBooking = results.find(
-          (booking) => booking.time_slot === "day"
-        );
-        const nightBooking = results.find(
-          (booking) => booking.time_slot === "night"
-        );
-
-        if (dayBooking && nightBooking) {
-          res.status(400).json({ message: "This date is fully booked." });
-        } else if (
-          (time_slot === "day" && dayBooking) ||
-          (time_slot === "night" && nightBooking)
-        ) {
-          res.status(400).json({
-            message: `The ${time_slot} slot for this date is already booked.`,
-          });
-        } else {
-          db.query(
-            "INSERT INTO bookings (business_id, date, time_slot, firstName, lastName, idNum, phoneNumber) VALUES (?, ?, ?, ?, ?, ?, ?)",
-            [
-              business_id,
-              normalizedDate,
-              time_slot,
-              firstName,
-              lastName,
-              idNum,
-              phoneNumber,
-            ],
-            (err, results) => {
-              if (err) {
-                console.error(err);
-                res.status(500).json({ message: "Database error", error: err });
-              } else {
-                res
-                  .status(201)
-                  .json({ message: "Booking created successfully" });
-              }
-            }
-          );
-        }
-      }
-    }
-  );
 });
 
 // Check booking status for a date
@@ -142,6 +339,41 @@ router.get("/business/:businessId", (req, res) => {
   });
 });
 
+// Get regular meals for a specific hall
+router.get("/meals/regular/:businessId", (req, res) => {
+  const { businessId } = req.params;
+
+  db.query(
+    "SELECT * FROM regular_meals WHERE business_id = ?",
+    [businessId],
+    (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ message: "Database error", error: err });
+      }
+      res.status(200).json(results);
+    }
+  );
+});
+
+// Get exclusive meals for a specific hall
+router.get("/meals/exclusive/:businessId", (req, res) => {
+  const { businessId } = req.params;
+
+  db.query(
+    "SELECT * FROM exclusive_meals WHERE business_id = ?",
+    [businessId],
+    (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ message: "Database error", error: err });
+      }
+      res.status(200).json(results);
+    }
+  );
+});
+
+// Delete a booking
 router.delete("/:date/:time_slot", (req, res) => {
   const { date, time_slot } = req.params;
   const normalizedDate = moment(date)
@@ -242,6 +474,32 @@ router.delete("/:date/:time_slot", (req, res) => {
             .json({ message: "Booking deleted successfully" });
         }
       );
+    }
+  );
+});
+// Get booking details for a specific date and time slot
+router.get("/:date/:time_slot/details", (req, res) => {
+  const { date, time_slot } = req.params;
+  const normalizedDate = moment(date)
+    .tz("Asia/Jerusalem")
+    .add(1, "days")
+    .format("YYYY-MM-DD");
+
+  // Query to fetch details from bookings table
+  db.query(
+    "SELECT * FROM bookings WHERE date = ? AND time_slot = ? UNION SELECT * FROM users_bookings WHERE date = ? AND time_slot = ?",
+    [normalizedDate, time_slot, normalizedDate, time_slot],
+    (err, results) => {
+      if (err) {
+        console.error("Database error:", err);
+        return res.status(500).json({ message: "Database error", error: err });
+      }
+
+      if (results.length === 0) {
+        return res.status(404).json({ message: "Booking not found" });
+      }
+
+      res.status(200).json(results[0]); // Return the booking details
     }
   );
 });

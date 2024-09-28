@@ -26,8 +26,13 @@ const Login = () => {
       }
 
       const data = await response.json();
+      console.log('Login response data:', data); // Log the entire response data
+
       localStorage.setItem('userId', data.userId);
       localStorage.setItem('userType', data.userType);
+      localStorage.setItem('category', data.categoryName); // Set the category name from response
+      console.log('Category set to:', data.categoryName); // Log the category
+
       login();
       navigate('/profile');
     } catch (error) {

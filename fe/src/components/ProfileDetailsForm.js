@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ProfileDetailsForm = ({ formData, handleInputChange, handleSubmit }) => {
+const ProfileDetailsForm = ({ formData, handleInputChange, handleSubmit, handleCancel }) => {
   return (
     <form onSubmit={handleSubmit}>
       <div className="form-group">
@@ -18,15 +18,6 @@ const ProfileDetailsForm = ({ formData, handleInputChange, handleSubmit }) => {
           type="text"
           name="lastName"
           value={formData.lastName || ''}
-          onChange={handleInputChange}
-        />
-      </div>
-      <div className="form-group">
-        <label>ID:</label>
-        <input
-          type="text"
-          name="id"
-          value={formData.id || ''}
           onChange={handleInputChange}
         />
       </div>
@@ -66,7 +57,17 @@ const ProfileDetailsForm = ({ formData, handleInputChange, handleSubmit }) => {
           onChange={handleInputChange}
         />
       </div>
+      <div className="form-group">
+        <label>Badge (optional):</label> {/* New input for badge */}
+        <input
+          type="text"
+          name="badge"
+          value={formData.badge || ''}
+          onChange={handleInputChange}
+        />
+      </div>
       <button type="submit">Save</button>
+      <button type="button" onClick={handleCancel}>Cancel</button> {/* Cancel button */}
     </form>
   );
 };

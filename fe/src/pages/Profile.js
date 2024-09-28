@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ProfilePhotoSection from '../components/ProfilePhotoSection';
-import ProfileDetailsForm from '../components/ProfileDetailsForm';
-import ProfileDetailsDisplay from '../components/ProfileDetailsDisplay';
-import { handleInputChange } from '../components/InputChangeHandler';
-import { handleProfilePhotoChange, handleProfilePhotoUpload } from '../components/ProfilePhotoUploadHandler';
-import { handleSubmit } from '../components/FormSubmitHandler';
-import { handleLogout } from '../components/LogoutHandler';
-import { fetchProfile } from '../components/FetchProfileHandler';
-import '../styles/styles.css';
-import '../styles/Profile.css';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import ProfilePhotoSection from "../components/ProfilePhotoSection";
+import ProfileDetailsForm from "../components/ProfileDetailsForm";
+import ProfileDetailsDisplay from "../components/ProfileDetailsDisplay";
+import { handleInputChange } from "../components/InputChangeHandler";
+import { handleProfilePhotoChange, handleProfilePhotoUpload } from "../components/ProfilePhotoUploadHandler";
+import { handleSubmit } from "../components/FormSubmitHandler";
+import { handleLogout } from "../components/LogoutHandler";
+import { fetchProfile } from "../components/FetchProfileHandler";
+import "../styles/styles.css";
+import "../styles/Profile.css";
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState({});
@@ -19,16 +19,20 @@ const Profile = () => {
   const [newProfilePhoto, setNewProfilePhoto] = useState(null);
   const navigate = useNavigate();
 
-  const userId = localStorage.getItem('userId');
-  const userType = localStorage.getItem('userType') || 'regular';
+  const userId = localStorage.getItem("userId");
+  const userType = localStorage.getItem("userType") || "regular";
 
   useEffect(() => {
     if (!userId) {
-      console.error('No user ID provided');
+      console.error("No user ID provided");
       return;
     }
     fetchProfile(userId, setUserDetails, setFormData, setProfilePhoto, userType);
   }, [userId, userType]);
+
+  const handleCancel = () => {
+    setEditing(false); // Close the form by setting editing to false
+  };
 
   if (!userId) {
     return <p>Error: No user ID provided</p>;
@@ -40,7 +44,7 @@ const Profile = () => {
 
   return (
     <div className="profile-container">
-      <h1>{userType === 'business' ? 'Business' : 'Regular'} User Profile</h1>
+      <h1>{userType === "business" ? "Business" : "Regular"} User Profile</h1>
       <ProfilePhotoSection
         profilePhoto={profilePhoto}
         handleProfilePhotoChange={(e) => handleProfilePhotoChange(e, setNewProfilePhoto)}
@@ -51,14 +55,14 @@ const Profile = () => {
           formData={formData}
           handleInputChange={(e) => handleInputChange(e, setFormData)}
           handleSubmit={(e) => handleSubmit(e, userId, formData, setEditing, setUserDetails, userType)}
+          handleCancel={handleCancel} // Pass the handleCancel function
         />
       ) : (
-        <ProfileDetailsDisplay
-          userDetails={userDetails}
-          setEditing={setEditing}
-        />
+        <ProfileDetailsDisplay userDetails={userDetails} setEditing={setEditing} />
       )}
-      <button onClick={() => handleLogout(navigate)} className="logout-button">Logout</button>
+      <button onClick={() => handleLogout(navigate)} className="logout-button">
+        Logout
+      </button>
     </div>
   );
 };

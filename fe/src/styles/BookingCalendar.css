@@ -1,64 +1,333 @@
-/* FullCalendarComponent.css */
-
+/* General Container */
 .booking-calendar-container {
-  max-width: 800px;
-  margin: 40px auto; /* Add margin to top and bottom */
   padding: 20px;
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.date-form {
-  margin-top: 20px;
-  text-align: left;
+/* Calendar Styling */
+.rbc-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
 }
 
-.date-form h3 {
-  margin-bottom: 20px;
+.rbc-toolbar .rbc-btn-group {
+  display: flex;
+  gap: 10px;
+}
+
+.rbc-toolbar button {
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.rbc-toolbar button:hover {
+  background-color: #0056b3;
+}
+
+.rbc-toolbar-label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.rbc-month-view {
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal Styling */
+.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 500px;
+  max-width: 90vw;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Form Styling */
+.form-content {
+  margin-top: 10px;
 }
 
 .form-group {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 15px;
 }
 
-label {
-  display: block;
+.form-group label {
   font-weight: bold;
   margin-bottom: 5px;
 }
 
-input {
-  width: 100%;
+.form-group input {
   padding: 8px;
+  font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
+  border-radius: 5px;
+  transition: border-color 0.3s;
 }
 
-button {
+.form-group input:focus {
+  border-color: #007bff;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-actions button {
   padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
   background-color: #007bff;
   color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
 }
 
-button:hover {
+.form-actions button:hover {
   background-color: #0056b3;
 }
 
-h1 {
-  margin-bottom: 20px;
+/* Meal Selection */
+.meals-container {
+  display: flex;
+  flex-direction: column;
 }
 
-p {
-  font-size: 16px;
-  color: red;
+.meal-section {
+  margin-top: 20px;
 }
-.rbc-toolbar button {
-  width: 100px;
+
+.meal-section h4 {
+  margin-bottom: 10px;
+}
+
+.meal-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.meal-photo {
+  width: 40px; /* Reduced the size to make the image smaller */
+  height: 40px; /* Reduced the size to make the image smaller */
+  object-fit: cover;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+
+.meal-option input[type="radio"] {
+  margin-right: 10px;
+}
+
+/* Time Slot Buttons */
+.time-slot-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.time-slot-buttons button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.time-slot-buttons button:hover {
+  background-color: #218838;
+}
+
+/* Modal Close Button */
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+/* Meal Selection Container */
+.meal-selection {
+  padding: 15px;
+  background-color: #f1f1f1;
+  border-radius: 10px;
+  max-width: 100%;
+}
+
+.meal-selection h3, .meal-selection h4 {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.meal-selection ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.meal-selection li {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.meal-selection li:hover {
+  background-color: #e9ecef;
+}
+
+.meal-selection input[type='radio'] {
+  margin-right: 10px;
+}
+
+.meal-selection img {
+  width: 30px;           /* Set image width */
+  height: 30px;          /* Set image height */
+  object-fit: cover;     /* Ensure the image covers the entire area while maintaining aspect ratio */
+  border-radius: 5px;    /* Rounded corners for the image */
+  margin-left: 10px;     /* Space between text and image */
+}
+
+.meal-selection li label {
+  display: flex;
+  align-items: center;
+}
+/* General button styles */
+button {
+  background-color: #007bff; /* Primary blue color */
+  color: white; /* Text color */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 15px; /* Padding for the button */
+  margin: 5px; /* Space around buttons */
+  cursor: pointer; /* Change cursor on hover */
+  font-size: 14px; /* Button text size */
+  font-weight: bold; /* Bold text */
+  transition: background-color 0.3s ease; /* Smooth color transition */
+}
+
+/* Hover effect for buttons */
+button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Styles for buttons within a group */
+.time-slot-buttons button,
+.day-actions button,
+.night-actions button {
+  display: inline-block; /* Display buttons in a line */
+}
+
+/* Ensure buttons take equal space in groups */
+.time-slot-buttons,
+.day-actions,
+.night-actions {
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-around; /* Distribute space evenly */
+}
+
+/* Styles for modal content */
+.modal-content {
+  background-color: #f9f9f9; /* Light background */
+  padding: 20px; /* Padding inside the modal */
+  border-radius: 10px; /* Rounded corners */
+  max-width: 500px; /* Max width for the modal */
+  margin: 0 auto; /* Center the modal */
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* Drop shadow */
+}
+
+/* Style for meal container */
+.meal-container {
+  background-color: #e9ecef; /* Light grey background */
+  padding: 15px; /* Padding inside the container */
+  border-radius: 8px; /* Rounded corners */
+  margin-bottom: 15px; /* Space below the container */
+  text-align: center; /* Center the text */
+}
+
+/* Meal details inside the container */
+.meal-details h5 {
+  margin: 10px 0; /* Space above and below meal name */
+  font-size: 16px; /* Slightly larger font size */
+}
+
+.meal-details img {
+  width: 100px; /* Fixed width for images */
+  height: 100px; /* Fixed height for images */
+  object-fit: cover; /* Ensure image fits inside the container */
+  border-radius: 50%; /* Make the image circular */
+  margin: 10px 0; /* Space around the image */
+}
+
+/* Form group styles */
+.form-group {
+  margin-bottom: 15px; /* Space between form groups */
+}
+
+.form-group label {
+  font-weight: bold; /* Bold labels */
+  display: block; /* Ensure labels take full width */
+  margin-bottom: 5px; /* Space below the label */
+}
+
+.form-group input {
+  width: 100%; /* Full width inputs */
+  padding: 8px; /* Padding inside inputs */
+  border: 1px solid #ccc; /* Light border */
+  border-radius: 4px; /* Rounded corners */
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+/* Form actions styles */
+.form-actions {
+  display: flex; /* Use flexbox for alignment */
+  justify-content: space-between; /* Space between buttons */
+  margin-top: 20px; /* Space above the buttons */
 }

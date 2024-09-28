@@ -11,14 +11,15 @@ const businessUserProfileBookingRoutes = require('./routes/businessUserProfileBo
 const regularUserProfileRoutes = require('./routes/regularUserProfile');
 const categoriesRouter = require('./routes/categories');
 const eventsRouter = require('./routes/bookings');
-
+const mealsRouter = require('./routes/meals');
 const app = express();
 
 // Middleware setup
 app.use(bodyParser.json());
 app.use(cors());
 
-// Serve static files from the uploads directory
+
+// Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Route setup
@@ -29,6 +30,7 @@ app.use('/api/profile/business/bookings', businessUserProfileBookingRoutes);
 app.use('/api/profile/regular', regularUserProfileRoutes);
 app.use('/api/categories', categoriesRouter);
 app.use('/api/bookings', eventsRouter);
+app.use('/api/meals', mealsRouter);
 
 const PORT = 8801;
 

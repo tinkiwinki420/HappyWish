@@ -7,7 +7,7 @@ import Profile from './pages/Profile';
 import BusinessProfile from './pages/BusinessProfile';
 import Financial from './pages/Financial';
 import PageDates from './pages/Dates'; // Dates from pages
-import Services from './pages/Services';
+import Services from './pages/Services'; // Import the Services component
 import Categories from './pages/Categories';
 import CategoryUsers from './pages/CategoryUsers';
 import CategoryUserProfile from './components/CategoryUserProfile'; // Import the new component
@@ -34,7 +34,7 @@ const App = () => {
           <Route path="/categories" element={<Categories />} />
           <Route path="/category/:categoryId" element={<CategoryUsers />} />
           <Route path="/users/:userId" element={<CategoryUserProfile />} /> {/* Add this route */}
-          <Route path="/users/:userId/dates" element={<ComponentDates />} /> {}
+          <Route path="/users/:userId/dates" element={<ComponentDates />} />
         </Route>
         {isAuthenticated && userType === 'business' && (
           <Route element={<BusinessLayout />}>

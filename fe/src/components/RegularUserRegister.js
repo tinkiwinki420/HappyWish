@@ -13,17 +13,36 @@ const RegularUserRegister = () => {
   const [dob, setDob] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [badge, setBadge] = useState(''); // New state for badge
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    // Validate date of birth
+    const today = new Date();
+    const birthDate = new Date(dob);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    const dayDiff = today.getDate() - birthDate.getDate();
+
+    if (birthDate > today) {
+      setError('Date of birth cannot be in the future.');
+      return;
+    }
+
+    if (age < 16 || (age === 16 && (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)))) {
+      setError('You must be at least 16 years old.');
+      return;
+    }
+
     try {
       const response = await fetch(`${API_URL}/api/register/regular`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ firstname, lastname, id, number, address, dob, email, password }),
+        body: JSON.stringify({ firstname, lastname, id, number, address, dob, email, password, badge }), // Include badge in request body
       });
 
       const data = await response.json();
@@ -73,6 +92,10 @@ const RegularUserRegister = () => {
       <div className="form-group">
         <label>Password:</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+      </div>
+      <div className="form-group">
+        <label>Badge (optional):</label> {/* New input for badge */}
+        <input type="text" value={badge} onChange={(e) => setBadge(e.target.value)} />
       </div>
       <button type="submit">Register</button>
       {error && <p>{error}</p>}

@@ -1,7 +1,11 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import '../styles/BusinessNavbar.css';
+
 const BusinessNavBar = () => {
+  const category = localStorage.getItem('category'); // Get category from localStorage
+
+  
   return (
     <nav className="business-navbar">
       <ul>
@@ -20,11 +24,14 @@ const BusinessNavBar = () => {
             Dates
           </NavLink>
         </li>
-        <li>
-          <NavLink to="/services" activeclassname="active">
-            Services
-          </NavLink>
-        </li>
+        {/* Conditionally render the Services link based on the category */}
+        {category === 'Hall' && (
+          <li>
+            <NavLink to="/services" activeclassname="active">
+              Services
+            </NavLink>
+          </li>
+        )}
       </ul>
     </nav>
   );

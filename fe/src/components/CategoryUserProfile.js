@@ -54,10 +54,16 @@ const CategoryUserProfile = () => {
             <h2>{user.businessName}</h2>
             <p>Address: {user.address}</p>
             <p>Email: {user.email}</p>
+            {/* Display Hall Capacity only for users in the "Hall" category */}
+            {user.category_name === "Hall" && (
+                <div className='form-group'>
+                    <label>Hall Capacity:</label>
+                    <p>{user.hallCapacity || "N/A"}</p>
+                </div>
+            )}
             <div className="user-photos">
                 {photos.length > 0 ? (
                     photos.map((photo, index) => (
-                        // eslint-disable-next-line jsx-a11y/img-redundant-alt
                         <img key={index} src={photo} alt={`User photo ${index + 1}`} />
                     ))
                 ) : (

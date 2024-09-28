@@ -70,7 +70,7 @@ router.post(
 router.get("/:categoryId/users", (req, res) => {
   const categoryId = req.params.categoryId;
   const query = `
-    SELECT id, businessname, address, email, profile_photo 
+    SELECT id, business_name, address, email, profile_photo 
     FROM business_users 
     WHERE category_id = ?`;
 

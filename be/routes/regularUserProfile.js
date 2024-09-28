@@ -58,8 +58,11 @@ router.get("/:id", (req, res) => {
       dob: user.dob,
       email: user.email,
       profilePhoto: user.profile_photo
-        ? `${req.protocol}://${req.get("host")}/uploads/${user.profile_photo}`
+        ? `${req.protocol}://${req.get(
+          "host"
+        )}/uploads/${user.profile_photo}`
         : null, // Include profile photo URL
+      badge: user.badge || null, // Include badge
     });
   });
 });
@@ -67,18 +70,17 @@ router.get("/:id", (req, res) => {
 // Update Regular User Profile
 router.put("/:id", (req, res) => {
   const id = req.params.id;
-  const { firstName, lastName, id: userId, number, address, dob, email } =
-    req.body;
+  const { firstName, lastName, id: userId, number, address, dob, email, badge } = req.body;
   console.log(`Updating profile for regular user with ID: ${id}`);
 
   const query = `
-    UPDATE regular_users 
-    SET firstname = ?, lastname = ?, id = ?, number = ?, address = ?, dob = ?, email = ?
+    UPDATE regular_users
+    SET firstname = ?, lastname = ?, id = ?, number = ?, address = ?, dob = ?, email = ?, badge = ?
     WHERE id = ?`;
 
   db.query(
     query,
-    [firstName, lastName, userId, number, address, dob, email, id],
+    [firstName, lastName, userId, number, address, dob, email, badge || null, id], // Include badge, default
     (err, results) => {
       if (err) {
         console.error("Database error:", err);

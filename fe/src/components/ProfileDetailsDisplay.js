@@ -10,6 +10,7 @@ const ProfileDetailsDisplay = ({ userDetails, setEditing }) => {
       <p><strong>Address:</strong> {userDetails.address}</p>
       <p><strong>Date of Birth:</strong> {userDetails.dob}</p>
       <p><strong>Email:</strong> {userDetails.email}</p>
+      <p><strong>Badge:</strong> {userDetails.badge || 'N/A'}</p>
       <button onClick={() => setEditing(true)}>Edit</button>
     </div>
   );

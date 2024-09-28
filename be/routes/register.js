@@ -23,8 +23,7 @@ const emailExists = (email, callback) => {
 
 // Registration Route for Regular User
 router.post("/regular", async (req, res) => {
-  const { firstname, lastname, id, number, address, dob, email, password } =
-    req.body;
+  const { firstname, lastname, id, number, address, dob, email, password, badge } = req.body;
 
   emailExists(email, async (err, exists) => {
     if (err) {
@@ -37,11 +36,11 @@ router.post("/regular", async (req, res) => {
 
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
-      const query = `INSERT INTO regular_users (firstname, lastname, id, number, address, dob, email, password) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+      const query = `INSERT INTO regular_users (firstname, lastname, id, number, address, dob, email, password, badge) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
       db.query(
         query,
-        [firstname, lastname, id, number, address, dob, email, hashedPassword],
+        [firstname, lastname, id, number, address, dob, email, hashedPassword, badge || null], // Include badge, default to null if not provided
         (err, results) => {
           if (err) {
             console.error("Database error:", err);
@@ -58,11 +57,19 @@ router.post("/regular", async (req, res) => {
     }
   });
 });
-
 // Registration Route for Business User
 router.post("/business", async (req, res) => {
-  const { businessName, numOfBusiness, address, email, password, category } =
-    req.body;
+  const { 
+    business_name, 
+    numOfBusiness, 
+    address, 
+    email, 
+    password, 
+    category_id, 
+    hallCapacity, 
+    minGuests, // Extract minGuests
+    price_per_event 
+  } = req.body;
 
   emailExists(email, async (err, exists) => {
     if (err) {
@@ -75,24 +82,34 @@ router.post("/business", async (req, res) => {
 
     try {
       const hashedPassword = await bcrypt.hash(password, 10);
-      const query = `INSERT INTO business_users (businessName, numOfBusiness, address, email, password, category_id) VALUES (?, ?, ?, ?, ?, ?)`;
+      
+      // Modify query to include minGuests
+      const query = `INSERT INTO business_users (business_name, numOfBusiness, address, email, password, category_id, hallCapacity, minGuests, price_per_event) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
       db.query(
         query,
-        [businessName, numOfBusiness, address, email, hashedPassword, category],
+        [
+          business_name,
+          numOfBusiness,
+          address,
+          email,
+          hashedPassword,
+          category_id, // Ensure this is being inserted
+          category_id === 1 ? hallCapacity : null, // Assuming category_id 1 corresponds to "Hall"
+          category_id === 1 ? minGuests : null, // Insert minGuests only if category is Hall
+          price_per_event // Ensure this is being inserted
+        ],
         (err, results) => {
           if (err) {
             console.error("Database error:", err);
-            return res
-              .status(500)
-              .json({ message: "Database error", error: err });
+            return res.status(500).json({ message: "Database error", error: err });
           }
-          res.status(201).json({ message: "Business registered successfully" });
+          res.status(201).json({ message: "Business user registered successfully" });
         }
       );
     } catch (error) {
       console.error("Error hashing password:", error);
-      res.status(500).json({ message: "Error registering business" });
+      res.status(500).json({ message: "Error registering business user" });
     }
   });
 });
