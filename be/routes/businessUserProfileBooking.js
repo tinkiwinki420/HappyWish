@@ -80,7 +80,7 @@ router.post("/regular", (req, res) => {
     time_slot,
     num_of_people,
     total_price,
-    advance_payment,
+    advance_payment,  // Now used only for profit calculation
     remaining_balance,
     meal_name,
     meal_price,
@@ -161,11 +161,13 @@ router.post("/regular", (req, res) => {
               ? meal_image.replace(/^\/?uploads\//, "")
               : null;
 
-            // Insert the booking into users_bookings with book_id
+            const profit = (total_price * 0.05).toFixed(2); // Calculate 5% profit
+
+            // Insert the booking into users_bookings with book_id and profit
             const insertQuery = `
               INSERT INTO users_bookings 
-              (business_id, date, time_slot, firstName, lastName, email, idNum, phoneNumber, total_price, num_of_people, paid, price_remaining, meal_name, meal_price, meal_photo, book_id) 
-              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+              (business_id, date, time_slot, firstName, lastName, email, idNum, phoneNumber, total_price, num_of_people, paid, price_remaining, meal_name, meal_price, meal_photo, book_id, profit) 
+              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             `;
             const queryParams = [
               business_id,
@@ -178,12 +180,13 @@ router.post("/regular", (req, res) => {
               phoneNumber,
               total_price,
               num_of_people,
-              advance_payment, // Now should be `paid`
-              remaining_balance, // Now should be `price_remaining`
+              "", // Set `paid` to an empty value
+              remaining_balance,
               meal_name || null,
               meal_price || null,
               mealImagePath || null,
               book_id,
+              profit,
             ];
 
             // Log the query parameters to debug
@@ -225,5 +228,6 @@ router.post("/regular", (req, res) => {
     });
   });
 });
+
 
 module.exports = router;

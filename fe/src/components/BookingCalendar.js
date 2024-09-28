@@ -1,11 +1,66 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { Calendar, momentLocalizer } from "react-big-calendar";
+import { Calendar, momentLocalizer, Views } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { API_URL } from "../constans";
 import "../styles/BookingCalendar.css";
 
+// Initialize the localizer for the calendar
 const localizer = momentLocalizer(moment);
+
+const CustomAgendaView = ({ events, date }) => {
+  // Filter events to include only those within the current month
+  const filteredEvents = events.filter(
+    (event) =>
+      moment(event.start).isSameOrAfter(moment(date).startOf("month")) &&
+      moment(event.start).isSameOrBefore(moment(date).endOf("month"))
+  );
+
+  return (
+    <div className='agenda-table'>
+      <table>
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Number of People</th>
+            <th>Date</th>
+            <th>Time Slot</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredEvents.map((event, index) => (
+            <tr key={index}>
+              <td>{event.firstName}</td>
+              <td>{event.lastName}</td>
+              <td>{event.phoneNumber}</td>
+              <td>{event.num_of_people}</td>
+              <td>{moment(event.start).format("MMMM Do YYYY")}</td>
+              <td>{event.time_slot}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
+// Implement the required static methods for the custom agenda view
+CustomAgendaView.navigate = (date, action) => {
+  switch (action) {
+    case "PREV":
+      return moment(date).subtract(1, "month").toDate();
+    case "NEXT":
+      return moment(date).add(1, "month").toDate();
+    default:
+      return date;
+  }
+};
+
+CustomAgendaView.title = (date) => {
+  return `Events for ${moment(date).format("MMMM YYYY")}`;
+};
 
 const BookingCalendar = () => {
   const [events, setEvents] = useState([]);
@@ -364,6 +419,7 @@ const BookingCalendar = () => {
     setEdit(false); // Reset edit mode
     setShowDetailsModal(false); // Ensure the details modal is closed
   };
+
   const handleTimeSelection = (time) => {
     setSelectedTimeSlot(time);
     setEdit(false);
@@ -388,7 +444,12 @@ const BookingCalendar = () => {
     setShowModal(true);
   };
 
-  // Inside the modal form
+  // Define custom views with the custom agenda
+  const views = {
+    month: true,
+    agenda: CustomAgendaView,
+  };
+
   return (
     <div className='booking-calendar-container'>
       <Calendar
@@ -396,8 +457,8 @@ const BookingCalendar = () => {
         events={events}
         selectable
         onSelectSlot={handleSelectSlot}
-        defaultView='month'
-        views={["month", "agenda"]}
+        defaultView={Views.MONTH}
+        views={views}
         style={{ height: 500 }}
       />
 
@@ -407,7 +468,7 @@ const BookingCalendar = () => {
             <h3>{`Booking for ${moment(selectedDate).format(
               "MMMM Do YYYY"
             )}`}</h3>
-            {selectedTimeSlot || edit ? ( // Skip slot selection if editing
+            {selectedTimeSlot || edit ? (
               <div className='form-content'>
                 <h3>Booking Details</h3>
                 <form>
@@ -429,15 +490,18 @@ const BookingCalendar = () => {
                       onChange={handleInputChange}
                     />
                   </div>
-                  <div className='form-group'>
-                    <label>ID Number:</label>
-                    <input
-                      type='text'
-                      name='idNum'
-                      value={formData.idNum}
-                      onChange={handleInputChange}
-                    />
-                  </div>
+                  {/* Conditionally hide the ID Number input when in edit mode */}
+                  {!edit && (
+                    <div className='form-group'>
+                      <label>ID Number:</label>
+                      <input
+                        type='text'
+                        name='idNum'
+                        value={formData.idNum}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  )}
                   <div className='form-group'>
                     <label>Phone Number:</label>
                     <input
@@ -469,7 +533,6 @@ const BookingCalendar = () => {
                       </div>
                       <div className='meal-selection'>
                         <h3>Select a Meal</h3>
-
                         <h4>Exclusive Meals</h4>
                         <ul>
                           {exclusiveMeals.map((meal) => (
@@ -493,7 +556,6 @@ const BookingCalendar = () => {
                             </li>
                           ))}
                         </ul>
-
                         <h4>Regular Meals</h4>
                         <ul>
                           {regularMeals.map((meal) => (
@@ -591,7 +653,6 @@ const BookingCalendar = () => {
                     readOnly
                   />
                 </div>
-                {/* Conditionally render the ID Number input */}
                 {!edit && (
                   <div className='form-group'>
                     <label>ID Number:</label>
