@@ -1,9 +1,10 @@
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { PayPalButton } from "react-paypal-button-v2";
 import { useParams } from "react-router-dom";
-
 import "../styles/Dates.css";
 import NavbarBooking from "./NavbarBooking";
 
@@ -45,6 +46,8 @@ const Dates = () => {
   const [pricePerEvent, setPricePerEvent] = useState(0);
   const [advancePayment, setAdvancePayment] = useState(0);
   const [selectedMeal, setSelectedMeal] = useState(null);
+  const [profit, setProfit] = useState(0); // Initialize profit
+  const [useNewPayPalButton, setUseNewPayPalButton] = useState(true);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -56,7 +59,10 @@ const Dates = () => {
     priceRemaining: 0,
     paid: 0,
   });
-
+  useEffect(() => {
+    const mealPrice = selectedMeal ? selectedMeal.price : 0;
+    calculateTotalPrice(mealPrice);
+  }, [numOfPeople, selectedMeal]);
   useEffect(() => {
     const fetchUserType = () => {
       const storedUserType = localStorage.getItem("userType");
@@ -241,6 +247,7 @@ const Dates = () => {
         : pricePerEvent;
     setTotalPrice(total);
     setAdvancePayment((total * 0.05).toFixed(2)); // Calculate 5% advance payment
+    setProfit((total * 0.05).toFixed(2)); // Calculate 5% profit and update the state
   };
 
   const handleTimeSelection = (time) => {
@@ -295,23 +302,78 @@ const Dates = () => {
       };
     }
 
-    fetch(`/api/profile/business/bookings/regular`, {
+    // Step 1: Create PayPal Order
+    fetch(`/api/paypal/create-paypal-order`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(bookingDetails),
+      body: JSON.stringify({ totalPrice }),
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.message === "Booking created successfully") {
-          alert("Booking successfully created!");
-          closeForm(); // Call closeForm to reset the form after booking
-        } else {
-          alert(data.message);
-        }
+        const orderID = data.id;
+
+        // Step 2: Render PayPal Button and Capture Order
+        window.paypal
+          .Buttons({
+            createOrder: function () {
+              return orderID;
+            },
+            onApprove: function (data, actions) {
+              return actions.order.capture().then(function (details) {
+                // Payment successful, complete the booking
+                alert(
+                  "Transaction completed by " + details.payer.name.given_name
+                );
+
+                // Capture the payment
+                fetch(`/api/paypal/capture-paypal-order`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ orderID: data.orderID }),
+                })
+                  .then((res) => res.json())
+                  .then((data) => {
+                    console.log("Payment captured:", data);
+                    // Proceed with the booking process
+                    fetch(`/api/profile/business/bookings/regular`, {
+                      method: "POST",
+                      headers: { "Content-Type": "application/json" },
+                      body: JSON.stringify(bookingDetails),
+                    })
+                      .then((response) => response.json())
+                      .then((data) => {
+                        if (data.message === "Booking created successfully") {
+                          alert("Booking successfully created!");
+                          closeForm(); // Reset the form after booking
+                        } else {
+                          alert(data.message);
+                        }
+                      })
+                      .catch((error) => {
+                        console.error(
+                          "Error storing date selection:",
+                          error.message
+                        );
+                        alert(
+                          "Error storing date selection. Please try again later."
+                        );
+                      });
+                  })
+                  .catch((err) => {
+                    console.error("Error capturing payment:", err);
+                  });
+              });
+            },
+            onError: function (err) {
+              console.error("PayPal error:", err);
+              alert("Something went wrong with the payment. Please try again.");
+            },
+          })
+          .render("#paypal-button-container"); // Replace with the actual container ID
       })
       .catch((error) => {
-        console.error("Error storing date selection:", error.message);
-        alert("Error storing date selection. Please try again later.");
+        console.error("Error creating PayPal order:", error.message);
+        alert("Error creating PayPal order. Please try again later.");
       });
   };
 
@@ -455,9 +517,49 @@ const Dates = () => {
         </div>
         <h4>Total Price: ${totalPrice}</h4>
         <h4>Advance Payment (5%): ${advancePayment}</h4>
-        <button onClick={() => handleBooking(selectedTimeSlot)}>
-          Confirm and Book
-        </button>
+        <div id='paypal-button-container'>
+          {useNewPayPalButton ? (
+            <PayPalScriptProvider
+              options={{ "client-id": "Abh--yzg5qvXE2RdVttNvIaka_bqq0usPz38CZJV4CgXV9i11QdadmPsL6-XrRY9lybpCKDWnZ9cDP6s" }}
+            >
+              <PayPalButtons
+                amount={profit} // Use the profit instead of totalPrice
+                onSuccess={(details, data) => {
+                  alert(
+                    "Transaction completed by " + details.payer.name.given_name
+                  );
+                  handleBooking(selectedTimeSlot);
+                }}
+                onError={(err) => {
+                  console.error("PayPal error:", err);
+                  alert("An error occurred with the PayPal transaction. Please try again.");
+                }}
+                onCancel={() => {
+                  alert("Payment process was canceled.");
+                }}
+                options={{
+                  clientId: "Abh--yzg5qvXE2RdVttNvIaka_bqq0usPz38CZJV4CgXV9i11QdadmPsL6-XrRY9lybpCKDWnZ9cDP6s", // Replace with your actual PayPal client ID
+                  currency: "USD",
+                }}
+              />
+            </PayPalScriptProvider>
+          ) : (
+            <PayPalButton
+              amount={profit} // Use the profit instead of totalPrice
+              onSuccess={(details, data) => {
+                alert(
+                  "Transaction completed by " + details.payer.name.given_name
+                );
+                handleBooking(selectedTimeSlot);
+              }}
+              options={{
+                clientId: "YOUR_PAYPAL_CLIENT_ID", // Replace with your actual PayPal client ID
+                currency: "USD",
+              }}
+            />
+          )}
+        </div>
+
         <button type='button' onClick={closeForm}>
           Cancel
         </button>

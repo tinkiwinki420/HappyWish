@@ -59,8 +59,12 @@ const CategoryUserProfile = () => {
                 <div className='form-group'>
                     <label>Hall Capacity:</label>
                     <p>{user.hallCapacity || "N/A"}</p>
+                    <label>minGuests:</label>
+                    <p>{user.minGuests || "N/A"}</p>
                 </div>
+                
             )}
+            
             <div className="user-photos">
                 {photos.length > 0 ? (
                     photos.map((photo, index) => (

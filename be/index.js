@@ -1,5 +1,5 @@
 // index.js
-
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -12,6 +12,8 @@ const regularUserProfileRoutes = require('./routes/regularUserProfile');
 const categoriesRouter = require('./routes/categories');
 const eventsRouter = require('./routes/bookings');
 const mealsRouter = require('./routes/meals');
+const paypalRoutes = require("./routes/paypalRoutes");
+
 const app = express();
 
 // Middleware setup
@@ -31,7 +33,7 @@ app.use('/api/profile/regular', regularUserProfileRoutes);
 app.use('/api/categories', categoriesRouter);
 app.use('/api/bookings', eventsRouter);
 app.use('/api/meals', mealsRouter);
-
+app.use("/api/paypal", paypalRoutes);
 const PORT = 8801;
 
 // Start the server
