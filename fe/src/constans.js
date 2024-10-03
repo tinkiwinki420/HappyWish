@@ -1,3 +1,3 @@
-// src/constans.js
+// src/con2stans.js
 export const API_URL = 'http://localhost:8801';
 export const maxLevel = 12;

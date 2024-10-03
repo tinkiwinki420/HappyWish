@@ -1,12 +1,138 @@
-/* Services.css */
+/* General layout for the profile container */
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
 
-/* Services Page Styles */
-.services-container {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    max-width: 800px;
-    margin: 20px auto;
-  }
-  
+/* Headers */
+.profile-container h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.profile-container h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* Form styles */
+.profile-container input[type="text"],
+.profile-container input[type="number"],
+.profile-container input[type="file"] {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.profile-container button {
+  padding: 10px 15px;
+  margin-right: 10px;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.profile-container button:hover {
+  background-color: #0056b3;
+}
+
+.profile-container button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+/* Meal container for displaying meals */
+.meal-container {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  position: relative;
+}
+
+.meal-container img {
+  float: left;
+  margin-right: 15px;
+  border-radius: 4px;
+}
+
+.meal-container h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.meal-container p {
+  margin: 5px 0;
+  color: #666;
+}
+
+/* Dropdown menu */
+.dropdown {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.dropbtn {
+  background-color: #007BFF;
+  color: white;
+  padding: 5px 10px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.dropbtn:hover {
+  background-color: #0056b3;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 4px;
+}
+
+.dropdown-content button {
+  background-color: #f9f9f9;
+  color: black;
+  padding: 10px 15px;
+  border: none;
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.dropdown-content button:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Cancel button */
+button.cancel-button {
+  background-color: #dc3545;
+}
+
+button.cancel-button:hover {
+  background-color: #c82333;
+}

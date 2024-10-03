@@ -1,0 +1,68 @@
+/* Background for login page */
+.login-page {
+    background-image: url('../styles/logos/login bg.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Form container */
+.login-container {
+    background-color: rgba(255, 255, 255, 0.692);
+    padding: 5dvh;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.411);
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.login-container h1 {
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 1.2em;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    font-size: 1.2em;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+/* Redirect message */
+.redirect-message {
+    margin-top: 10px;
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* Link to registration page */
+.redirect-message a {
+    color: #007aff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.redirect-message a:hover {
+    text-decoration: underline;
+}

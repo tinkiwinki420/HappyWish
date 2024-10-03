@@ -1,14 +1,15 @@
-
-import '../styles/Financial.css';
+import FinancialComponent from "../components/FinancialComponent"; // Import your financial component
+import "../styles/Financial.css";
 
 const Financial = () => {
-
   return (
-    <div>
-      <div className="financial-container">
-        <h1>Financial Page</h1>
-        {/* Add your financial page content here */}
-      </div>
+    <div id='root'>
+      <main>
+        <div className='financial-container'>
+          {/* Add FinancialComponent here */}
+          <FinancialComponent />
+        </div>
+      </main>
     </div>
   );
 };

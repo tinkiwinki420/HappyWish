@@ -1,34 +1,41 @@
 /* BusinessNavBar.css */
 
-/* Ensure the navbar is always visible */
+/* Ensure the navbar is always visible and centered */
 .business-navbar {
-    display: flex;
-    justify-content: space-around;
-    background-color: #333;
-    padding: 10px 0;
-  }
-  
-  .business-navbar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex; /* Make the list items display in a row */
-  }
-  
-  .business-navbar ul li {
-    margin-right: 10px; /* Space between the nav items */
-  }
-  
-  .business-navbar .nav-link {
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-    display: inline-block; /* Ensure links are inline */
-  }
-  
-  .business-navbar .nav-link:hover {
-    background-color: #ddd;
-    color: black;
-  }
-  
+  display: flex;
+  justify-content: center; /* Center the navbar content */
+  align-items: center; /* Vertically center the items */
+  background: linear-gradient(to right, #ffccff, #ccffff); /* Gradient background */
+  padding: 5px 0;
+  width: 100%; /* Full width */
+  border: 1px solid #ccc; /* Gentle bottom border */
+}
+
+.business-navbar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex; /* Make the list items display in a row */
+}
+
+.business-navbar ul li {
+  margin: 0 20px; /* Increase spacing around the items */
+}
+
+.business-navbar .nav-link {
+  color: rgb(0, 0, 0);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  display: block; /* Use block to support the padding */
+  font-weight: bold; /* Make the font bold */
+  transition: background-color 0.3s, color 0.3s; /* Smooth transition for hover effects */
+  border-radius: 15px; /* Rounded corners */
+  border: 2px solid #e0e0e0; /* Subtle decorative border */
+}
+
+.business-navbar .nav-link:hover {
+  background-color: #555; /* Lighter grey for hover */
+  color: #fff; /* Keep text white on hover */
+  border-color: #bbb; /* Change border color on hover */
+}

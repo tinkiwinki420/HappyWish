@@ -5,7 +5,6 @@ import "../styles/Categories.css";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
-
   const [categoryPhoto, setCategoryPhoto] = useState(null);
   const navigate = useNavigate();
 
@@ -63,25 +62,16 @@ const Categories = () => {
 
   return (
     <div className='categories-container'>
-      <h1>Categories</h1>
       <div className='categories-grid'>
         {categories.length > 0 ? (
           categories.map((category) => (
             <div key={category.id} className='category-item'>
               <img
-                src={
-                  category.category_photo
-                    ? `${API_URL}${category.category_photo}`
-                    : "https://via.placeholder.com/100"
-                }
+                src={category.category_photo ? `${API_URL}${category.category_photo}` : "https://via.placeholder.com/100"}
                 alt={category.name}
                 onClick={() => handleCategoryClick(category.id)}
               />
               <p>{category.name}</p>
-              <input type='file' onChange={handleFileChange} />
-              <button onClick={() => handleUploadPhoto(category.id)}>
-                Upload Photo
-              </button>
             </div>
           ))
         ) : (

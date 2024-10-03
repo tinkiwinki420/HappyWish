@@ -1,126 +1,283 @@
-/* BusinessProfile.css */
-
 /* General container styles */
 .profile-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Profile photo section styles */
-  .profile-photo-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .profile-photo {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-  }
-  
-  .profile-photo-placeholder {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    background-color: #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 10px;
-  }
-  
-  /* Form styles */
-  form {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-  
-  form input[type="file"] {
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  form button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-align: center;
-  }
-  
-  form button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Photo gallery styles */
-  .photo-gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-  }
-  
-  .photo-gallery img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 4px;
-  }
-  
-  /* Photos section styles */
-  .photos-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  .business-photo {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-  }
-  
-  /* Button styles */
-  button {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Error and loading message styles */
-  .error-message {
-    color: red;
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .loading-message {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px;
+  background: linear-gradient(to right, #ffccff, #ccffff); /* Gradient background */
+  border-radius: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e6e6e6;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* Profile photo section styles */
+.profile-photo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.profile-photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 20px;
+  border: 3px solid #9c4aee; /* Matching color */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.profile-photo-placeholder {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background-color: #f0e6ff; /* Soft background color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border: 3px dashed #ff99cc; /* Matching color */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Form styles */
+form {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+form input[type="file"] {
+  display: block;
+  margin-bottom: 15px;
+  border: 2px solid #e6e6e6;
+  padding: 12px;
+  border-radius: 12px;
+  transition: border-color 0.3s ease;
+}
+
+/* Cool Button Styles */
+button {
+  background-color: #9c4aee; /* Matching color */
+  color: black;
+  padding: 12px 24px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+button:hover {
+  background-color: #cc99ff; /* Slightly darker for hover */
+  transform: translateY(-2px);
+}
+
+button:active {
+  background-color: #b266ff; /* Even darker for active state */
+}
+
+/* Logout button */
+.logout-button {
+  background-color: #ff6666; /* More vibrant color */
+  border-radius: 20px;
+  font-weight: bold;
+  margin-top: 30px;
+}
+
+.logout-button:hover {
+  background-color: #cc6666; /* Matching hover color */
+}
+
+/* Photo gallery styles */
+.photo-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.photo-gallery img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 2px solid #ffccff; /* Matching color */
+}
+
+.photo-gallery img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border-color: #ccffff; /* Matching hover color */
+}
+
+/* Photos section styles */
+.photos-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.business-photo {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 16px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  border: 2px solid #ff99cc; /* Matching color */
+}
+
+/* Error and loading message styles */
+.error-message {
+  color: #d32f2f;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+.loading-message {
+  text-align: center;
+  margin-bottom: 30px;
+  font-style: italic;
+  color: #757575;
+}
+
+/* Text styling */
+h1 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: black;
+  text-align: center;
+  font-size: 2.8em;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+h2 {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #ff99cc; /* Matching color */
+  font-size: 2.2em;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 600;
+}
+
+p {
+  font-family: 'Arial', sans-serif;
+  font-size: 1.4em;
+  color: black;
+  margin-bottom: 15px;
+}
+
+/* Cool borders */
+.form-group {
+  margin-bottom: 30px;
+}
+
+.form-group label {
+  font-weight: bold;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: black;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: 2px solid #e6e6e6;
+  transition: border-color 0.3s ease;
+}
+
+
+/* Custom upload button */
+.custom-upload-button {
+  background-color: #b266ff; /* Matching color */
+  color: black;
+  padding: 12px 24px;
+  border-radius: 20px;
+  margin-bottom: 1cm;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  display: inline-block;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 15px;
+}
+
+.custom-upload-button:hover {
+  background-color: #cc99ff; /* Slightly darker for hover */
+  transform: translateY(-2px);
+}
+
+.custom-upload-button:active {
+  background-color: #b266ff; /* Even darker for active state */
+}
+/* Container for the profile header and the toggle button */
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* Toggle switch styles */
+.toggle-container {
+  display: flex;
+  align-items: center;
+}
+
+.toggle-label {
+  margin-left: 10px;
+  font-size: 1.2em;
+  color: black;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #9c4aee; /* Matching color */
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}

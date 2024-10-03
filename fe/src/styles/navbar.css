@@ -1,27 +1,32 @@
 .navbar {
-    background-color: #333;
+    background: transparent; /* Keep it transparent to show the gradient from header */
     overflow: hidden;
-  }
-  
-  .navbar ul {
+    display: flex; /* Use flexbox for layout */
+    justify-content: flex-start; /* Ensure that the items align to the left */
+    padding-left: 10px; /* Optional: Add some padding to push the navbar items slightly away from the edge */
+}
+
+.navbar ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
-  }
-  
-  .navbar ul li {
-    float: left;
-  }
-  
-  .navbar ul li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-  
-  .navbar ul li a:hover {
-    background-color: #111;
-  }
-  
+    display: flex; /* Make the list items display in a row */
+    align-items: center; /* Ensure vertical alignment in the center */
+}
+
+.navbar ul li {
+    margin-right: 5px; /* Small space between the nav items */
+}
+
+.navbar ul li a {
+    padding: 10px 15px; /* Add padding to the links for better clickable area */
+    text-decoration: none; /* Remove the underline from links */
+    color: #333; /* Set the link color */
+    transition: background 0.3s ease, transform 0.2s ease; /* Smooth transitions for hover effects */
+}
+
+.navbar ul li a:hover {
+    background: linear-gradient(45deg, #ffb3e6, #69e2dc); /* Lighter gradient on hover */
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Add shadow on hover */
+}

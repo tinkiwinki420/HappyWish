@@ -1,0 +1,96 @@
+/* NotificationDropdown.css */
+.notification-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-icon {
+  cursor: pointer;
+  position: relative;
+}
+
+.bell-icon {
+  font-size: 24px;
+}
+
+.notification-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: red;
+  color: white;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 50%;
+  font-weight: bold;
+}
+
+.notification-menu {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 350px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  max-height: 400px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.notification-menu.open {
+  display: block;
+  animation: fadeIn 0.3s ease;
+}
+
+.no-notifications {
+  padding: 20px;
+  text-align: center;
+  color: #999;
+}
+
+.notification-menu ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.notification-menu li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  border-bottom: 1px solid #f1f1f1;
+  background-color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.notification-menu li:hover {
+  background-color: #f9f9f9;
+}
+
+.notification-menu li.unread {
+  font-weight: bold;
+  background-color: #eaf6ff;
+}
+
+.notification-menu li.read {
+  font-weight: normal;
+  background-color: #fff;
+}
+
+.notification-time {
+  font-size: 12px;
+  color: #888;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -1,15 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import ProfilePhotoSection from '../components/ProfilePhotoSection';
-import ProfileDetailsForm from '../components/ProfileDetailsForm';
-import ProfileDetailsDisplay from '../components/ProfileDetailsDisplay';
-import { handleInputChange } from '../components/InputChangeHandler';
-import { handleProfilePhotoChange, handleProfilePhotoUpload } from '../components/ProfilePhotoUploadHandler';
-import { handleSubmit } from '../components/FormSubmitHandler';
-import { handleLogout } from '../components/LogoutHandler';
-import { fetchProfile } from '../components/FetchProfileHandler';
-import '../styles/styles.css';
-import '../styles/Profile.css';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { fetchProfile } from "../components/FetchProfileHandler";
+import { handleSubmit } from "../components/FormSubmitHandler";
+import { handleInputChange } from "../components/InputChangeHandler";
+import { handleLogout } from "../components/LogoutHandler";
+import ProfileDetailsDisplay from "../components/ProfileDetailsDisplay";
+import ProfileDetailsForm from "../components/ProfileDetailsForm";
+import ProfilePhotoSection from "../components/ProfilePhotoSection";
+import "../styles/Profile.css";
 
 const Profile = () => {
   const [userDetails, setUserDetails] = useState({});
@@ -17,18 +15,30 @@ const Profile = () => {
   const [formData, setFormData] = useState({});
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [newProfilePhoto, setNewProfilePhoto] = useState(null);
+  const [loading, setLoading] = useState(true); // Added loading state
   const navigate = useNavigate();
 
-  const userId = localStorage.getItem('userId');
-  const userType = localStorage.getItem('userType') || 'regular';
+  const userId = localStorage.getItem("userId");
+  const userType = localStorage.getItem("userType") || "regular";
 
   useEffect(() => {
     if (!userId) {
-      console.error('No user ID provided');
+      console.error("No user ID provided");
       return;
     }
-    fetchProfile(userId, setUserDetails, setFormData, setProfilePhoto, userType);
+    setLoading(true); // Start loading
+    fetchProfile(
+      userId,
+      setUserDetails,
+      setFormData,
+      setProfilePhoto,
+      userType
+    ).finally(() => setLoading(false)); // Stop loading after data is fetched
   }, [userId, userType]);
+
+  const handleCancel = () => {
+    setEditing(false); // Close the form by setting editing to false
+  };
 
   if (!userId) {
     return <p>Error: No user ID provided</p>;
@@ -39,26 +49,56 @@ const Profile = () => {
   }
 
   return (
-    <div className="profile-container">
-      <h1>{userType === 'business' ? 'Business' : 'Regular'} User Profile</h1>
-      <ProfilePhotoSection
-        profilePhoto={profilePhoto}
-        handleProfilePhotoChange={(e) => handleProfilePhotoChange(e, setNewProfilePhoto)}
-        handleProfilePhotoUpload={(e) => handleProfilePhotoUpload(e, userId, newProfilePhoto, setProfilePhoto, setNewProfilePhoto, userType)}
-      />
-      {editing ? (
-        <ProfileDetailsForm
-          formData={formData}
-          handleInputChange={(e) => handleInputChange(e, setFormData)}
-          handleSubmit={(e) => handleSubmit(e, userId, formData, setEditing, setUserDetails, userType)}
-        />
+    <div className='profile-container'>
+      <h1>{userType === "business" ? "Business" : "Regular"} User Profile</h1>
+
+      {loading ? (
+        <p>Loading profile...</p> // Display while loading
       ) : (
-        <ProfileDetailsDisplay
-          userDetails={userDetails}
-          setEditing={setEditing}
-        />
+        <>
+          <ProfilePhotoSection
+            profilePhoto={profilePhoto}
+            setNewProfilePhoto={setNewProfilePhoto}
+            setProfilePhoto={setProfilePhoto}
+            userId={userId}
+            userType={userType}
+          />
+          {editing ? (
+            <ProfileDetailsForm
+              formData={formData}
+              handleInputChange={(e) => handleInputChange(e, setFormData)}
+              handleSubmit={(e) =>
+                handleSubmit(
+                  e,
+                  userId,
+                  formData,
+                  setEditing,
+                  setUserDetails,
+                  userType
+                )
+              }
+              handleCancel={handleCancel}
+            />
+          ) : (
+            <ProfileDetailsDisplay
+              userDetails={userDetails}
+              setEditing={setEditing}
+            />
+          )}
+        </>
       )}
-      <button onClick={() => handleLogout(navigate)} className="logout-button">Logout</button>
+
+      {/* Button for navigating to Recent Bookings */}
+      <button
+        onClick={() => navigate("/recent-bookings")}
+        className='recent-bookings-button'
+      >
+        Recent Bookings
+      </button>
+
+      <button onClick={() => handleLogout(navigate)} className='logout-button'>
+        Logout
+      </button>
     </div>
   );
 };

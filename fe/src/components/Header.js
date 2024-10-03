@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import '../styles/header.css'; // Import the CSS file
+import '../styles/navbar.css'; // Import the CSS file
 
 const Header = () => {
   const userId = localStorage.getItem("userId");

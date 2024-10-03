@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { API_URL } from '../constans';
 import AuthContext from '../contexts/AuthContext';
-import '../styles/styles.css';
+import '../styles/login.css'; // Import the CSS
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -26,8 +26,13 @@ const Login = () => {
       }
 
       const data = await response.json();
+      console.log('Login response data:', data); // Log the entire response data
+
       localStorage.setItem('userId', data.userId);
       localStorage.setItem('userType', data.userType);
+      localStorage.setItem('category', data.categoryName); // Set the category name from response
+      console.log('Category set to:', data.categoryName); // Log the category
+
       login();
       navigate('/profile');
     } catch (error) {
@@ -37,29 +42,34 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <form onSubmit={handleSubmit}>
-        <h1>Login</h1>
-        <div className="form-group">
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+    <div className="login-page"> {/* Wrapper for the background */}
+      <div className="login-container">
+        <form onSubmit={handleSubmit}>
+          <h1>Login</h1>
+          <div className="form-group">
+            <label>Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Password:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit">Login</button>
+          <div className="redirect-message">
+            Don't have an account? <Link to="/register">Register here</Link>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

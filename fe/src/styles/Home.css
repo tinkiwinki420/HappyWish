@@ -1,15 +1,190 @@
-/* Home.css */
-.home-container {
-    text-align: center;
+/* General Styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
     padding: 20px;
 }
 
-.home-title {
-    font-size: 2em;
-    margin-bottom: 20px;
+/* Hero Section */
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 100px 20px;
+    background: url('../styles/logos/bgpic.webp') center center/cover no-repeat;
+    color: rgb(136, 130, 130);
+    min-height: 80vh;
 }
 
-.home-description {
-    font-size: 1.2em;
-    color: #555;
+.hero-section h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3em;
+    margin-bottom: 20px;
+    color:rgb(105, 85, 85);
+    text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.7);
 }
+
+
+
+.cta-button {
+    padding: 10px 20px;
+    background-color: #ff6f61;
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
+}
+
+.cta-button:hover {
+    background-color: #e55a50;
+}
+
+/* Process Section */
+.process-section {
+    padding: 50px 20px;
+    background-color: #fff;
+}
+
+.process-title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2em;
+    color: #333;
+}
+
+.process-steps {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+
+.process-step {
+    flex: 1; /* Flex-grow to take available space */
+    text-align: center;
+    margin: 110px; /* Margin around each step for spacing */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions for hover effects */
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    border-radius: 10px; /* Rounded corners */
+    overflow: hidden; /* Ensures nothing hangs out of the box */
+}
+
+.process-step:hover {
+    transform: translateY(-5px); /* Move up slightly on hover */
+    box-shadow: 0 5px 30px rgba(0,0,0,0.2); /* Enhanced shadow on hover for a "pop" effect */
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400&family=Playfair+Display:wght@700&display=swap');
+
+.process-step h3, .service-item h3, .gallery-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 70; /* Adjust weight as needed */
+    color: #333; /* Or any color you prefer */
+    font-size: 20px;
+}
+
+.process-step p, .service-item p {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 40; /* Adjust weight as needed */
+    color: #666; /* Or any color you prefer */
+}
+
+.process-image1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px 200px;
+    background: url('../styles/logos/signup.png') center center/cover no-repeat;
+    color: white;
+    min-height: 20vh;
+}
+.process-image2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px 200px;
+    background: url('../styles/logos/weddingdate.png') center center/cover no-repeat;
+    color: white;
+    min-height: 20vh;
+}
+.process-image3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 10px 200px;
+    background: url('../styles/logos/wedding.jpg') center center/cover no-repeat;
+    color: white;
+    min-height: 20vh;
+}
+
+
+/* Services Section */
+.services-section {
+    padding: 50px 20px;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .service-item {
+    flex: 1;
+    margin: 10px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    transition: box-shadow 0.3s ease;
+    background-color: #fff;
+    max-width: 30%;
+    box-sizing: border-box;
+  }
+  
+  .service-item h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  
+  .service-item p {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1em;
+    color: #666;
+    line-height: 1.5;
+  }
+  
+  /* Hover Effect */
+  .service-item:hover {
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .service-item {
+      flex-basis: 100%;
+      max-width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+  
+  
+
